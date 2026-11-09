@@ -1,0 +1,40 @@
+[
+  {
+    "id": "wa-alert-1794217722458",
+    "type": "application_confirmation",
+    "applicationId": "SPH-2026-6800",
+    "applicantName": "Ananya Deshmukh",
+    "email": "ananya.deshmukh@example.com",
+    "contact": "+91 9776655443",
+    "domain": "AI Integrated Full Stack Development",
+    "alertMessage": "*SPHERONIX Corporate Internships & Training*\nHello Ananya Deshmukh,\n\nYour application has been received by SPHERONIX Corporate Review Board:\n• *Application ID:* SPH-2026-6800\n• *Domain Track:* AI Integrated Full Stack Development\n• *Cohort:* 2026 Corporate Batch\n• *Status:* Submitted (Under HR & Technical Screening)\n\nYou can check your status on the portal anytime using ID: *SPH-2026-6800*.",
+    "chatUrl": "https://wa.me/919776655443?text=*SPHERONIX%20Corporate%20Internships%20%26%20Training*%0AHello%20Ananya%20Deshmukh%2C%0A%0AYour%20application%20has%20been%20received%20by%20SPHERONIX%20Corporate%20Review%20Board%3A%0A%E2%80%A2%20*Application%20ID%3A*%20SPH-2026-6800%0A%E2%80%A2%20*Domain%20Track%3A*%20AI%20Integrated%20Full%20Stack%20Development%0A%E2%80%A2%20*Cohort%3A*%202026%20Corporate%20Batch%0A%E2%80%A2%20*Status%3A*%20Submitted%20(Under%20HR%20%26%20Technical%20Screening)%0A%0AYou%20can%20check%20your%20status%20on%20the%20portal%20anytime%20using%20ID%3A%20*SPH-2026-6800*.",
+    "status": "queued",
+    "createdAt": "2026-11-09T09:48:42.458Z"
+  },
+  {
+    "id": "wa-alert-1794037584532",
+    "type": "application_confirmation",
+    "applicationId": "SPH-2026-3194",
+    "applicantName": "Vikram Joshi",
+    "email": "vikram.joshi.1794037584522@example.com",
+    "contact": "+91 9888877777",
+    "domain": "Embedded Systems & IoT",
+    "alertMessage": "*SPHERONIX Corporate Internships & Training*\nHello Vikram Joshi,\n\nYour application has been received by SPHERONIX Corporate Review Board:\n• *Application ID:* SPH-2026-3194\n• *Domain Track:* Embedded Systems & IoT\n• *Cohort:* 2026 Corporate Batch\n• *Status:* Submitted (Under HR & Technical Screening)\n\nYou can check your status on the portal anytime using ID: *SPH-2026-3194*.",
+    "chatUrl": "https://wa.me/919888877777?text=*SPHERONIX%20Corporate%20Internships%20%26%20Training*%0AHello%20Vikram%20Joshi%2C%0A%0AYour%20application%20has%20been%20received%20by%20SPHERONIX%20Corporate%20Review%20Board%3A%0A%E2%80%A2%20*Application%20ID%3A*%20SPH-2026-3194%0A%E2%80%A2%20*Domain%20Track%3A*%20Embedded%20Systems%20%26%20IoT%0A%E2%80%A2%20*Cohort%3A*%202026%20Corporate%20Batch%0A%E2%80%A2%20*Status%3A*%20Submitted%20(Under%20HR%20%26%20Technical%20Screening)%0A%0AYou%20can%20check%20your%20status%20on%20the%20portal%20anytime%20using%20ID%3A%20*SPH-2026-3194*.",
+    "status": "queued",
+    "createdAt": "2026-11-07T07:46:24.532Z"
+  },
+  {
+    "id": "wa-1794037584516",
+    "type": "inquiry",
+    "applicantName": "Ananya Verma",
+    "contact": "+91 9123456789",
+    "domain": "AI Integrated Full Stack Development",
+    "topic": "Detailed 6-Month Syllabus & Curriculum",
+    "message": "Can I get the full module breakdown and mentor details?",
+    "chatUrl": "https://wa.me/919876543210?text=*SPHERONIX%20Corporate%20Internship%20Inquiry*%0A%E2%80%A2%20*Applicant%20Name%3A*%20Ananya%20Verma%0A%E2%80%A2%20*Student%20Contact%3A*%20%2B91%209123456789%0A%E2%80%A2%20*Chosen%20Domain%3A*%20AI%20Integrated%20Full%20Stack%20Development%0A%E2%80%A2%20*Subject%2FTopic%3A*%20Detailed%206-Month%20Syllabus%20%26%20Curriculum%0A%E2%80%A2%20*Message%3A*%20Can%20I%20get%20the%20full%20module%20breakdown%20and%20mentor%20details%3F%0A%0AHello%20Admissions%20Team%2C%20please%20assist%20me%20regarding%20the%20above%20inquiry.",
+    "status": "initiated",
+    "createdAt": "2026-11-07T07:46:24.516Z"
+  }
+]

@@ -1,0 +1,652 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --lavender-bg: #f5f0fc;
+  --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-tech: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, #faf7fe 0%, #f3eefc 40%, #ede4f9 100%);
+  color: #2e1065; /* Deep lavender-slate text for ultra crisp readability */
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.022em; /* Apple iOS iPhone signature letter spacing */
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.038em; /* iOS iPhone signature crisp title kerning */
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Scrollbar in Lavender */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f3eefc;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4b5fd;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a78bfa;
+}
+
+/* Cool Futuristic Dimensional Page Transition with Smooth Spring Flow */
+@keyframes coolPageIn {
+  0% {
+    opacity: 0.85;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* Ambient Hologram Light Sweep Wave Across Page Mount */
+@keyframes pageLightSweep {
+  0% {
+    top: -15%;
+    opacity: 0.85;
+  }
+  100% {
+    top: 115%;
+    opacity: 0;
+  }
+}
+
+/* Sleek Laser Route Beam Across Viewport Top */
+@keyframes laserRouteBeam {
+  0% {
+    transform: translateX(-100%);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(0%);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-cool-page {
+  position: relative;
+  animation: coolPageIn 0.35s ease-out forwards;
+}
+
+/* 3D Spheronix Robot Animations */
+@keyframes robotFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(0.8deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes ambientAuraPulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(0.92);
+    opacity: 0.35;
+  }
+}
+
+@keyframes groundRingPulse {
+  0% {
+    transform: translateX(-50%) rotateX(75deg) scale(0.92);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(-50%) rotateX(75deg) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(-50%) rotateX(75deg) scale(0.92);
+    opacity: 0.5;
+  }
+}
+
+/* Cinematic Sci-Fi Laser Scanner */
+@keyframes cinematicScanner {
+  0% {
+    top: 5%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  50% {
+    top: 92%;
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0;
+  }
+  61% {
+    top: 92%;
+    opacity: 0;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  95% {
+    top: 5%;
+    opacity: 0.9;
+  }
+  100% {
+    top: 5%;
+    opacity: 0;
+  }
+}
+
+/* Cinematic Armor Metallic Sheen Sweep */
+@keyframes armorSheen {
+  0% {
+    transform: translateX(-180%) translateY(-100%) rotate(25deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  45% {
+    transform: translateX(200%) translateY(120%) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(200%) translateY(120%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+/* Rotating 3D Waist Orbital Ring */
+@keyframes orbitRingSpin {
+  0% {
+    transform: rotateX(68deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(68deg) rotateZ(360deg);
+  }
+}
+
+/* Concentric Stasis Platform Counter-rotation */
+@keyframes stasisPlatformSpin {
+  0% {
+    transform: translateX(-50%) rotateX(75deg) rotateZ(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotateX(75deg) rotateZ(360deg);
+  }
+}
+
+@keyframes stasisPlatformSpinReverse {
+  0% {
+    transform: translateX(-50%) rotateX(75deg) rotateZ(360deg);
+  }
+  100% {
+    transform: translateX(-50%) rotateX(75deg) rotateZ(0deg);
+  }
+}
+
+/* Ascending Cybernetic Energy Sparks */
+@keyframes cyberParticleFloat {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-240px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Cinematic Anamorphic Visor Lens Flare Streak */
+@keyframes anamorphicVisorFlare {
+  0% {
+    left: -20%;
+    opacity: 0;
+    transform: scaleX(0.4);
+  }
+  15% {
+    opacity: 0.95;
+    transform: scaleX(1.1);
+  }
+  50% {
+    left: 80%;
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+  65% {
+    left: 110%;
+    opacity: 0;
+    transform: scaleX(0.5);
+  }
+  100% {
+    left: 110%;
+    opacity: 0;
+  }
+}
+
+/* Cinematic Quantum Chest Core Arc Reactor Rays */
+@keyframes quantumCoreRays {
+  0% {
+    transform: rotate(0deg) scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(0.95);
+    opacity: 0.8;
+  }
+}
+
+/* Cinematic Holographic Hexagonal Shield Matrix */
+@keyframes hexShieldRipple {
+  0% {
+    opacity: 0.25;
+    transform: scale(0.97) rotate(0deg);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.03) rotate(3deg);
+  }
+  100% {
+    opacity: 0.25;
+    transform: scale(0.97) rotate(0deg);
+  }
+}
+
+/* Cinematic EMP Plasma Shockwave Expansion */
+@keyframes empShockwaveExpand {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+    border-width: 4px;
+  }
+  60% {
+    opacity: 0.85;
+    border-width: 2.5px;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* Cinematic Anti-Gravity Laser Containment Beam */
+@keyframes stasisBeamVertical {
+  0% {
+    height: 20px;
+    opacity: 0.3;
+  }
+  50% {
+    height: 380px;
+    opacity: 0.9;
+  }
+  100% {
+    height: 20px;
+    opacity: 0.3;
+  }
+}
+
+/* Weighty Robotic 3D Levitation Float */
+@keyframes cinematicWeightyFloat {
+  0% {
+    transform: translateY(0px) rotateZ(0deg) rotateX(0deg);
+  }
+  30% {
+    transform: translateY(-16px) rotateZ(-1.2deg) rotateX(1deg);
+  }
+  65% {
+    transform: translateY(8px) rotateZ(1deg) rotateX(-0.8deg);
+  }
+  100% {
+    transform: translateY(0px) rotateZ(0deg) rotateX(0deg);
+  }
+}
+
+/* Cinematic HUD Frame Corner Pulse */
+@keyframes hudCornerGlow {
+  0% {
+    opacity: 0.4;
+    border-color: rgba(168, 85, 247, 0.4);
+  }
+  50% {
+    opacity: 0.9;
+    border-color: rgba(192, 132, 252, 0.9);
+  }
+  100% {
+    opacity: 0.4;
+    border-color: rgba(168, 85, 247, 0.4);
+  }
+}
+
+/* Radar Sweep Beam */
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Oscilloscope Equalizer Bar Heights */
+@keyframes eqBarPulse1 {
+  0%, 100% { height: 6px; }
+  50% { height: 22px; }
+}
+@keyframes eqBarPulse2 {
+  0%, 100% { height: 18px; }
+  50% { height: 8px; }
+}
+@keyframes eqBarPulse3 {
+  0%, 100% { height: 10px; }
+  50% { height: 26px; }
+}
+@keyframes eqBarPulse4 {
+  0%, 100% { height: 24px; }
+  50% { height: 12px; }
+}
+
+/* Hologram Matrix Glitch / Ripple */
+@keyframes holoGlitch {
+  0% {
+    filter: drop-shadow(0 20px 35px rgba(124, 58, 237, 0.42));
+  }
+  20% {
+    filter: drop-shadow(4px 0 0 rgba(236, 72, 153, 0.5)) drop-shadow(-4px 0 0 rgba(56, 189, 248, 0.5));
+  }
+  40% {
+    filter: drop-shadow(0 20px 35px rgba(124, 58, 237, 0.42));
+  }
+  60% {
+    filter: drop-shadow(-3px 0 0 rgba(236, 72, 153, 0.4)) drop-shadow(3px 0 0 rgba(56, 189, 248, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 20px 35px rgba(124, 58, 237, 0.42));
+  }
+}
+
+/* Nav Button Shimmer Sweep */
+@keyframes navShimmer {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  50%, 100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+/* Tree Structure Connecting Line Energy Flow */
+@keyframes treeEnergyFlow {
+  0% {
+    stroke-dashoffset: 80;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Tree Central Hub Pulse */
+@keyframes treeHubPulse {
+  0% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.3), 0 0 50px rgba(124, 58, 237, 0.15);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(168, 85, 247, 0.55), 0 0 80px rgba(56, 189, 248, 0.4);
+    transform: scale(1.025);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.3), 0 0 50px rgba(124, 58, 237, 0.15);
+    transform: scale(1);
+  }
+}
+
+/* Tree Junction Node Pulse */
+@keyframes junctionDotGlow {
+  0%, 100% {
+    r: 3.5;
+    opacity: 0.7;
+  }
+  50% {
+    r: 5.5;
+    opacity: 1;
+  }
+}
+
+/* =================================================================== */
+/* SIMPLE PROFESSIONAL 3D ROBOT ANIMATIONS                            */
+/* =================================================================== */
+@keyframes simplePro3DFloat {
+  0% {
+    transform: translateY(0px) rotateY(-3deg) rotateX(1.8deg);
+  }
+  50% {
+    transform: translateY(-16px) rotateY(3deg) rotateX(-1.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotateY(-3deg) rotateX(1.8deg);
+  }
+}
+
+@keyframes proContactShadow {
+  0% {
+    transform: translateX(-50%) rotateX(75deg) scale(0.92);
+    opacity: 0.45;
+    filter: blur(8px);
+  }
+  50% {
+    transform: translateX(-50%) rotateX(75deg) scale(1.18);
+    opacity: 0.2;
+    filter: blur(16px);
+  }
+  100% {
+    transform: translateX(-50%) rotateX(75deg) scale(0.92);
+    opacity: 0.45;
+    filter: blur(8px);
+  }
+}
+
+@keyframes proArmorSheen {
+  0% {
+    transform: translateX(-160%) translateY(-100%) rotate(25deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.5;
+  }
+  45% {
+    transform: translateX(180%) translateY(120%) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(180%) translateY(120%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+@keyframes proStasisRing {
+  0% {
+    transform: translateX(-50%) rotateX(75deg) rotateZ(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotateX(75deg) rotateZ(360deg);
+  }
+}
+
+@keyframes activeLaserBeamFlow {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 3D Gyroscope Orbit Rings */
+@keyframes proGyroRingSpin {
+  0% {
+    transform: rotateX(68deg) rotateY(14deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(68deg) rotateY(14deg) rotateZ(360deg);
+  }
+}
+
+@keyframes proGyroRingSpinReverse {
+  0% {
+    transform: rotateX(72deg) rotateY(-18deg) rotateZ(360deg);
+  }
+  100% {
+    transform: rotateX(72deg) rotateY(-18deg) rotateZ(0deg);
+  }
+}
+
+/* Floating 3D Depth Companion Nodes */
+@keyframes proCubeSpin1 {
+  0% {
+    transform: translateY(0px) rotateX(15deg) rotateY(0deg) rotateZ(10deg);
+  }
+  50% {
+    transform: translateY(-12px) rotateX(45deg) rotateY(180deg) rotateZ(25deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(15deg) rotateY(360deg) rotateZ(10deg);
+  }
+}
+
+@keyframes proCubeSpin2 {
+  0% {
+    transform: translateY(0px) rotateX(-20deg) rotateY(360deg) rotateZ(-15deg);
+  }
+  50% {
+    transform: translateY(10px) rotateX(20deg) rotateY(180deg) rotateZ(-5deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(-20deg) rotateY(0deg) rotateZ(-15deg);
+  }
+}
+
+/* Visor Laser Glance Scan */
+@keyframes visorLaserScan {
+  0% {
+    left: 8%;
+    opacity: 0;
+    transform: scaleX(0.4);
+  }
+  15% {
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+  48% {
+    left: 78%;
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+  62% {
+    left: 88%;
+    opacity: 0;
+    transform: scaleX(0.4);
+  }
+  100% {
+    left: 88%;
+    opacity: 0;
+  }
+}
+
+/* Interactive Click Quantum Wave Burst */
+@keyframes quantumPulseWave {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.95;
+    border-width: 3.5px;
+  }
+  60% {
+    opacity: 0.7;
+    border-width: 2px;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* Micro Zero-G Floating Embers */
+@keyframes microEmberFloat {
+  0% {
+    transform: translateY(0px) scale(0.6);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.75;
+  }
+  75% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(-180px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+
+
+

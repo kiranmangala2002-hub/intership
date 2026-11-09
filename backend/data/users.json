@@ -1,0 +1,38 @@
+[
+  {
+    "id": "user-seed-001",
+    "name": "Demo Student",
+    "email": "student@spheronix.com",
+    "role": "student",
+    "collegeName": "SPHERONIX Institute of Technology",
+    "passwordHash": "f85ff052324d445d70f653d2b580c36c381ec3a1d1ef972d8bb46e1650c7552f",
+    "salt": "spheronix_salt_2026",
+    "createdAt": "2026-11-06T12:05:46.225Z"
+  },
+  {
+    "_id": "user-1794032893835",
+    "id": "user-1794032893835",
+    "name": "Kiran Test Student",
+    "email": "student.1794032893807@spheronix.tech",
+    "contact": "+91 9988776655",
+    "collegeName": "Engineering College",
+    "passoutYear": "2026",
+    "role": "student",
+    "passwordHash": "20f1f4cf2227c8ab1e117cbf50168975f6ec84892d0fc8af3b3ba1daf4331182",
+    "salt": "44931bc00a1b4b193b03575b576f0e3b",
+    "createdAt": "2026-11-07T06:28:13.835Z"
+  },
+  {
+    "_id": "user-1794032893868",
+    "id": "user-1794032893868",
+    "name": "Kiran Dev 1794032893767",
+    "email": "kiran.dev.1794032893767@example.com",
+    "contact": "",
+    "collegeName": "",
+    "passoutYear": "2026",
+    "role": "student",
+    "passwordHash": "e2d02b0a682d12b40973b229f2881a1f0d6e76891e1cb6cd7b44d33367879fba",
+    "salt": "99bd11b1983055e62e7b2d4f98e5fe3d",
+    "createdAt": "2026-11-07T06:28:13.868Z"
+  }
+]

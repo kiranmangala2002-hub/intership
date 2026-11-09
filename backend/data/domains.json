@@ -1,0 +1,72 @@
+[
+  {
+    "id": "fullstack-dev",
+    "title": "AI Integrated Full Stack Development",
+    "category": "Software Engineering",
+    "duration": "3 - 6 Months",
+    "stipend": "₹10,000 - ₹15,000/mo (Performance Based)",
+    "stipendMin": 10000,
+    "stipendMax": 15000,
+    "icon": "💻",
+    "featured": true,
+    "description": "Build scalable, high-performance web applications augmented with AI agents, LLM APIs, modern responsive interfaces, and production cloud backends.",
+    "skills": [
+      "React / Next.js",
+      "Node.js",
+      "AI Agents / LLMs",
+      "LangChain",
+      "Python",
+      "Tailwind",
+      "PostgreSQL",
+      "MongoDB"
+    ],
+    "highlights": [
+      "Production-grade enterprise repository access",
+      "Weekly 1-on-1 architecture reviews with senior leads",
+      "Verifiable SPHERONIX Experience Certificate & LOR"
+    ],
+    "curriculum": [
+      "Web Technologies: HTML5, CSS3, Modern JavaScript",
+      "Frontend Development: React.js, Components, Hooks & APIs",
+      "Backend Development: Node.js, Express, REST APIs & JWT",
+      "Database Management: PostgreSQL, MongoDB & Cloud DBs",
+      "Full-Stack Integration, Git Collaboration & Cloud Hosting",
+      "Generative AI Integrations, LLMs & Enterprise Capstone"
+    ]
+  },
+  {
+    "id": "embedded-iot",
+    "title": "Embedded Systems & IoT",
+    "category": "Hardware Engineering",
+    "duration": "3 - 6 Months",
+    "stipend": "₹10,000 - ₹15,000/mo (Performance Based)",
+    "stipendMin": 10000,
+    "stipendMax": 15000,
+    "icon": "⚡",
+    "featured": true,
+    "description": "Design embedded firmware, connect intelligent sensor edge nodes, build real-time IoT architectures, and interface industrial microcontrollers with cloud telemetry.",
+    "skills": [
+      "ARM Cortex",
+      "ESP32",
+      "RTOS",
+      "MQTT",
+      "PCB Design",
+      "C / C++",
+      "FreeRTOS",
+      "Hardware Debugging"
+    ],
+    "highlights": [
+      "Industry-grade hardware lab & test bench access",
+      "Weekly 1-on-1 firmware reviews with senior leads",
+      "Verifiable SPHERONIX Experience Certificate & LOR"
+    ],
+    "curriculum": [
+      "Embedded C Programming & Microcontroller Memory Architecture",
+      "ARM Cortex-M Core, NVIC Interrupts & Keil MDK Tooling",
+      "Hardware Peripheral Buses: UART, SPI, I2C & Industrial CAN",
+      "Real-Time Operating Systems: FreeRTOS Multitasking & Mutexes",
+      "ESP32 Wireless Connectivity: Wi-Fi, BLE & Embedded Web Servers",
+      "MQTT Cloud Telemetry, AWS IoT Core & Custom PCB Prototyping"
+    ]
+  }
+]
