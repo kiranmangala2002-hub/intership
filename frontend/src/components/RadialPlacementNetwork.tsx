@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useId } from 'react';
-import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useId, useLayoutEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 /**
  * Partner Node definition representing a satellite company in the radial network
@@ -8,17 +8,16 @@ export interface PartnerNode {
   id: string;
   name: string;
   logo: string;
-  x: number; // Coordinate in 1000x600 viewBox (0 - 1000)
-  y: number; // Coordinate in 1000x600 viewBox (0 - 600)
-  w?: number; // Optional width, defaults to 120
-  h?: number; // Optional height, defaults to 64
-  curve: string; // Bézier path from center hub to satellite node
+  leftPercent: number; // Percentage X (0 - 100)
+  topPercent: number;  // Percentage Y (0 - 100)
+  w?: number;          // Card width in px (default 120)
+  h?: number;          // Card height in px (default 64)
   industry?: string;
   accentColor?: string;
 }
 
 /**
- * Candidate profile avatar representing a placed alumni
+ * Candidate profile avatar representing an alumni trainee
  */
 export interface CandidateAvatar {
   id: string;
@@ -36,7 +35,7 @@ export interface RadialPlacementNetworkProps {
   centerLogo?: string;
   /** Company or organization title */
   centerTitle?: string;
-  /** Subtitle pill badge under the metric (default: 'HIRING PARTNERS') */
+  /** Subtitle badge under the metric (default: 'HIRING PARTNERS') */
   centerSubtitle?: string;
   /** Small category pill at top of section */
   badgeLabel?: string;
@@ -50,11 +49,11 @@ export interface RadialPlacementNetworkProps {
   targetCount?: number;
   /** Duration in seconds for the count-up animation (default: 5.2) */
   countDuration?: number;
-  /** Satellite partner company nodes (default: 12 tech leaders) */
+  /** Satellite partner company nodes */
   partners?: PartnerNode[];
   /** Candidate alumni pool for traveling avatar badges */
   candidates?: CandidateAvatar[];
-  /** Journey duration per candidate flight in seconds (default: 2.8) */
+  /** Journey duration per candidate flight in seconds (default: 2.6) */
   flightDuration?: number;
   /** Departure interval between candidate flights in milliseconds (default: 1100) */
   flightInterval?: number;
@@ -65,165 +64,71 @@ export interface RadialPlacementNetworkProps {
 }
 
 // ============================================================================
-// DEFAULT DATA: 12 RADIAL PARTNERS & ALUMNI CANDIDATES
+// 1. ISOLATED COUNT-UP METRIC COMPONENT (Zero re-renders on parent network!)
+// ============================================================================
+interface CountUpMetricProps {
+  target: number;
+  duration: number;
+  replayKey: number;
+}
+
+export const CountUpMetric = React.memo(function CountUpMetric({
+  target,
+  duration,
+  replayKey,
+}: CountUpMetricProps) {
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    let startTime: number | null = null;
+    let animId: number;
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / (duration * 1000), 1);
+      // Cubic ease-out: 1 - (1 - progress)^3
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easeOut * target));
+
+      if (progress < 1) {
+        animId = requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [target, duration, replayKey]);
+
+  return <span className="font-mono">{count.toLocaleString()}+</span>;
+});
+
+// ============================================================================
+// DEFAULT DATA: 13 BALANCED RADIAL PARTNERS & ALUMNI CANDIDATES
 // ============================================================================
 const DEFAULT_PARTNERS: PartnerNode[] = [
-  {
-    id: 'google',
-    name: 'Google',
-    logo: '/companies/google.png',
-    x: 500,
-    y: 95,
-    w: 135,
-    h: 70,
-    curve: 'M 500 235 C 500 195, 500 160, 500 130',
-    industry: 'Cloud & AI',
-    accentColor: '#4285F4',
-  },
-  {
-    id: 'infosys',
-    name: 'Infosys',
-    logo: '/companies/infosys.png',
-    x: 235,
-    y: 120,
-    w: 120,
-    h: 62,
-    curve: 'M 430 255 C 375 220, 330 185, 295 150',
-    industry: 'IT Services',
-    accentColor: '#007cc3',
-  },
-  {
-    id: 'stemx',
-    name: 'STEMx',
-    logo: '/companies/stemx.png',
-    x: 765,
-    y: 120,
-    w: 120,
-    h: 62,
-    curve: 'M 570 255 C 625 220, 670 185, 705 150',
-    industry: 'EdTech R&D',
-    accentColor: '#f97316',
-  },
-  {
-    id: 'tcs',
-    name: 'TCS',
-    logo: '/companies/tcs.png',
-    x: 345,
-    y: 190,
-    w: 115,
-    h: 60,
-    curve: 'M 430 270 C 415 250, 405 230, 395 215',
-    industry: 'Consulting',
-    accentColor: '#e11d48',
-  },
-  {
-    id: 'intel',
-    name: 'Intel',
-    logo: '/companies/intel.png',
-    x: 655,
-    y: 185,
-    w: 115,
-    h: 60,
-    curve: 'M 570 270 C 585 250, 595 230, 605 215',
-    industry: 'Semiconductors',
-    accentColor: '#0068b5',
-  },
-  {
-    id: 'arm',
-    name: 'ARM',
-    logo: '/companies/arm.png',
-    x: 95,
-    y: 285,
-    w: 125,
-    h: 65,
-    curve: 'M 390 300 C 310 295, 225 290, 160 285',
-    industry: 'Chip Architecture',
-    accentColor: '#0091bd',
-  },
-  {
-    id: 'cognizant',
-    name: 'Cognizant',
-    logo: '/companies/cognizant.png',
-    x: 905,
-    y: 285,
-    w: 125,
-    h: 65,
-    curve: 'M 610 300 C 690 295, 775 290, 840 285',
-    industry: 'Digital Systems',
-    accentColor: '#1a365d',
-  },
-  {
-    id: 'bosch',
-    name: 'Bosch',
-    logo: '/companies/bosch.png',
-    x: 250,
-    y: 340,
-    w: 120,
-    h: 62,
-    curve: 'M 400 320 C 365 325, 335 335, 310 340',
-    industry: 'Automotive & IoT',
-    accentColor: '#e30613',
-  },
-  {
-    id: 'capgemini',
-    name: 'Capgemini',
-    logo: '/companies/capgemini.png',
-    x: 750,
-    y: 340,
-    w: 120,
-    h: 62,
-    curve: 'M 600 320 C 635 325, 665 335, 690 340',
-    industry: 'Engineering Cloud',
-    accentColor: '#12abdb',
-  },
-  {
-    id: 'accenture',
-    name: 'Accenture',
-    logo: '/companies/accenture.png',
-    x: 165,
-    y: 450,
-    w: 140,
-    h: 72,
-    curve: 'M 420 345 C 340 375, 280 395, 235 420',
-    industry: 'Strategy & Tech',
-    accentColor: '#a100ff',
-  },
-  {
-    id: 'microchip',
-    name: 'Microchip',
-    logo: '/companies/microchip.png',
-    x: 835,
-    y: 450,
-    w: 138,
-    h: 70,
-    curve: 'M 580 345 C 660 375, 720 395, 765 420',
-    industry: 'Microcontrollers',
-    accentColor: '#ec1c24',
-  },
-  {
-    id: 'amd',
-    name: 'AMD',
-    logo: '/companies/amd.png',
-    x: 365,
-    y: 480,
-    w: 120,
-    h: 62,
-    curve: 'M 445 365 C 415 400, 385 425, 365 450',
-    industry: 'Compute Silicon',
-    accentColor: '#ed1c24',
-  },
-  {
-    id: 'verizon',
-    name: 'Verizon',
-    logo: '/companies/verizon.png',
-    x: 635,
-    y: 480,
-    w: 120,
-    h: 62,
-    curve: 'M 555 365 C 585 400, 615 425, 635 450',
-    industry: '5G Networks',
-    accentColor: '#cd040b',
-  },
+  // Top Center
+  { id: 'google', name: 'Google', logo: '/companies/google.png', leftPercent: 50, topPercent: 12, w: 135, h: 68, industry: 'Cloud & AI' },
+  // Top Right
+  { id: 'intel', name: 'Intel', logo: '/companies/intel.png', leftPercent: 67, topPercent: 22, w: 115, h: 58, industry: 'Semiconductors' },
+  { id: 'stemx', name: 'STEMx', logo: '/companies/stemx.png', leftPercent: 82, topPercent: 15, w: 120, h: 60, industry: 'EdTech R&D' },
+  // Right
+  { id: 'cognizant', name: 'Cognizant', logo: '/companies/cognizant.png', leftPercent: 89, topPercent: 48, w: 125, h: 64, industry: 'Digital Systems' },
+  { id: 'capgemini', name: 'Capgemini', logo: '/companies/capgemini.png', leftPercent: 75, topPercent: 58, w: 120, h: 60, industry: 'Engineering Cloud' },
+  // Bottom Right
+  { id: 'microchip', name: 'Microchip', logo: '/companies/microchip.png', leftPercent: 83, topPercent: 80, w: 135, h: 68, industry: 'Microcontrollers' },
+  { id: 'verizon', name: 'Verizon', logo: '/companies/verizon.png', leftPercent: 63, topPercent: 87, w: 120, h: 60, industry: '5G Networks' },
+  // Bottom Left
+  { id: 'amd', name: 'AMD', logo: '/companies/amd.png', leftPercent: 37, topPercent: 87, w: 120, h: 60, industry: 'Compute Silicon' },
+  { id: 'accenture', name: 'Accenture', logo: '/companies/accenture.png', leftPercent: 17, topPercent: 80, w: 135, h: 68, industry: 'Strategy & Tech' },
+  // Left
+  { id: 'bosch', name: 'Bosch', logo: '/companies/bosch.png', leftPercent: 25, topPercent: 58, w: 120, h: 60, industry: 'Automotive & IoT' },
+  { id: 'arm', name: 'ARM', logo: '/companies/arm.png', leftPercent: 11, topPercent: 48, w: 125, h: 64, industry: 'Chip Architecture' },
+  // Top Left
+  { id: 'infosys', name: 'Infosys', logo: '/companies/infosys.png', leftPercent: 18, topPercent: 15, w: 120, h: 60, industry: 'IT Services' },
+  { id: 'tcs', name: 'TCS', logo: '/companies/tcs.png', leftPercent: 33, topPercent: 22, w: 115, h: 58, industry: 'Consulting' },
 ];
 
 const DEFAULT_CANDIDATES: CandidateAvatar[] = [
@@ -241,14 +146,22 @@ interface ActiveTraveler {
   id: string;
   partnerId: string;
   partnerName: string;
-  curve: string;
+  pathD: string;
   candidate: CandidateAvatar;
   duration: number;
   createdAt: number;
 }
 
+interface MeasuredPath {
+  d: string;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}
+
 /**
- * RadialPlacementNetwork - Production-ready, responsive radial placement animation component
+ * RadialPlacementNetwork - Production-ready, pixel-accurate radial placement animation
  */
 export default function RadialPlacementNetwork({
   centerLogo = '/logo.png',
@@ -257,12 +170,12 @@ export default function RadialPlacementNetwork({
   badgeLabel = 'WHERE OUR STUDENTS LAND',
   heading = 'Careers that land\nwhere it counts.',
   description = 'From our technical training batches to premier product engineering teams, our alumni secure verified careers at global technology leaders.',
-  footerText = 'Every learner who finishes at SPHERONIX walks into a hiring network of 3,000+ opportunities and 28+ semiconductor partners.',
+  footerText = 'Every learner who finishes at SPHERONIX walks into a hiring network 3,000+',
   targetCount = 3000,
   countDuration = 5.2,
   partners = DEFAULT_PARTNERS,
   candidates = DEFAULT_CANDIDATES,
-  flightDuration = 2.8,
+  flightDuration = 2.6,
   flightInterval = 1100,
   onPartnerClick,
   className = '',
@@ -271,96 +184,183 @@ export default function RadialPlacementNetwork({
   const [travelers, setTravelers] = useState<ActiveTraveler[]>([]);
   const [landedPartners, setLandedPartners] = useState<Record<string, number>>({});
   const [replayKey, setReplayKey] = useState<number>(0);
-  const [displayNumber, setDisplayNumber] = useState<number>(0);
+  const [paths, setPaths] = useState<Record<string, MeasuredPath>>({});
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const centerCardRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const nextRouteIdxRef = useRef<number>(0);
   const flightCounterRef = useRef<number>(0);
   const uniqueId = useId();
 
   // --------------------------------------------------------------------------
-  // 1. FRAMER MOTION COUNT-UP ANIMATION
+  // 1. EXACT REAL-PIXEL GEOMETRIC MEASUREMENT (Lines ALWAYS connect to cards!)
   // --------------------------------------------------------------------------
-  const countMotionValue = useMotionValue(0);
+  const updateMeasuredPaths = useCallback(() => {
+    if (!containerRef.current || !centerCardRef.current) return;
 
-  useEffect(() => {
-    countMotionValue.set(0);
-    const controls = animate(countMotionValue, targetCount, {
-      duration: countDuration,
-      ease: [0.16, 1, 0.3, 1], // Cubic Ease-Out
-      onUpdate: (latest) => {
-        setDisplayNumber(Math.floor(latest));
-      },
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const centerRect = centerCardRef.current.getBoundingClientRect();
+
+    if (containerRect.width === 0 || containerRect.height === 0) return;
+
+    // Center Hub center in container pixel space
+    const centerCx = centerRect.left - containerRect.left + centerRect.width / 2;
+    const centerCy = centerRect.top - containerRect.top + centerRect.height / 2;
+    const centerHalfW = centerRect.width / 2;
+    const centerHalfH = centerRect.height / 2;
+
+    const computedPaths: Record<string, MeasuredPath> = {};
+
+    partners.forEach((partner) => {
+      const cardEl = cardRefs.current[partner.id];
+      if (!cardEl) return;
+
+      const cardRect = cardEl.getBoundingClientRect();
+      const cardCx = cardRect.left - containerRect.left + cardRect.width / 2;
+      const cardCy = cardRect.top - containerRect.top + cardRect.height / 2;
+      const cardHalfW = cardRect.width / 2;
+      const cardHalfH = cardRect.height / 2;
+
+      // Direction vector
+      const dx = cardCx - centerCx;
+      const dy = cardCy - centerCy;
+      const angle = Math.atan2(dy, dx);
+
+      // Start: Exact perimeter point on center card
+      // Using ellipse / rounded rectangle perimeter clamping
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
+      const startX = centerCx + cosA * (centerHalfW - 6);
+      const startY = centerCy + sinA * (centerHalfH - 6);
+
+      // End: Exact perimeter point on partner card facing the center
+      const endX = cardCx - cosA * (cardHalfW - 4);
+      const endY = cardCy - sinA * (cardHalfH - 4);
+
+      // Gentle organic Bézier curvature:
+      // Control points bow slightly outward
+      const midDist = Math.hypot(dx, dy) * 0.15;
+      const perpX = -sinA * midDist;
+      const perpY = cosA * midDist;
+
+      const cp1x = startX + cosA * (dx * 0.35) + perpX * 0.35;
+      const cp1y = startY + sinA * (dy * 0.35) + perpY * 0.35;
+      const cp2x = startX + cosA * (dx * 0.7) + perpX * 0.15;
+      const cp2y = startY + sinA * (dy * 0.7) + perpY * 0.15;
+
+      const d = `M ${startX.toFixed(1)} ${startY.toFixed(1)} C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${endX.toFixed(1)} ${endY.toFixed(1)}`;
+
+      computedPaths[partner.id] = {
+        d,
+        startX,
+        startY,
+        endX,
+        endY,
+      };
     });
 
-    return () => controls.stop();
-  }, [targetCount, countDuration, replayKey, countMotionValue]);
+    setPaths(computedPaths);
+  }, [partners]);
 
-  // --------------------------------------------------------------------------
-  // 2. CONCURRENT TRAVELING AVATAR PIPELINE
-  // --------------------------------------------------------------------------
-  const launchCandidateFlight = (targetPartnerId?: string) => {
-    if (!partners.length) return;
+  // Recalculate on mount, resize, and partner changes
+  useLayoutEffect(() => {
+    updateMeasuredPaths();
+    const handleResize = () => updateMeasuredPaths();
+    window.addEventListener('resize', handleResize);
 
-    const partnerId = targetPartnerId || partners[nextRouteIdxRef.current % partners.length].id;
-    if (!targetPartnerId) {
-      nextRouteIdxRef.current += 1;
+    const resizeObserver = new ResizeObserver(() => {
+      updateMeasuredPaths();
+    });
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
     }
 
-    const targetPartner = partners.find((p) => p.id === partnerId);
-    if (!targetPartner) return;
+    // Safety check after fonts/images settle
+    const settleTimer = setTimeout(updateMeasuredPaths, 300);
 
-    const candidate = candidates[flightCounterRef.current % candidates.length];
-    const flightId = `flight_${++flightCounterRef.current}_${Date.now()}`;
-
-    const newFlight: ActiveTraveler = {
-      id: flightId,
-      partnerId: targetPartner.id,
-      partnerName: targetPartner.name,
-      curve: targetPartner.curve,
-      candidate,
-      duration: flightDuration,
-      createdAt: Date.now(),
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
+      clearTimeout(settleTimer);
     };
+  }, [updateMeasuredPaths]);
 
-    setTravelers((prev) => {
-      // Retain max 4 active flights to keep DOM lean and 60fps consistent
-      const active = prev.filter((t) => Date.now() - t.createdAt < t.duration * 1000);
-      return [...active, newFlight];
-    });
+  // --------------------------------------------------------------------------
+  // 2. CONCURRENT TRAVELING CANDIDATE PIPELINE
+  // --------------------------------------------------------------------------
+  const launchCandidateFlight = useCallback(
+    (targetPartnerId?: string) => {
+      if (!partners.length) return;
 
-    // Impact event: When candidate arrives (~88% of flight time), trigger node glow
-    const impactTimer = setTimeout(() => {
-      setLandedPartners((prev) => ({
-        ...prev,
-        [targetPartner.id]: Date.now(),
-      }));
-    }, flightDuration * 1000 * 0.88);
+      const partnerId = targetPartnerId || partners[nextRouteIdxRef.current % partners.length].id;
+      if (!targetPartnerId) {
+        nextRouteIdxRef.current += 1;
+      }
 
-    return () => clearTimeout(impactTimer);
-  };
+      const targetPartner = partners.find((p) => p.id === partnerId);
+      if (!targetPartner) return;
 
+      const pathData = paths[targetPartner.id];
+      if (!pathData) return;
+
+      const candidate = candidates[flightCounterRef.current % candidates.length];
+      const flightId = `flight_${++flightCounterRef.current}_${Date.now()}`;
+
+      const newFlight: ActiveTraveler = {
+        id: flightId,
+        partnerId: targetPartner.id,
+        partnerName: targetPartner.name,
+        pathD: pathData.d,
+        candidate,
+        duration: flightDuration,
+        createdAt: Date.now(),
+      };
+
+      setTravelers((prev) => {
+        // Keep at most 4 active flights in DOM
+        const active = prev.filter((t) => Date.now() - t.createdAt < t.duration * 1000);
+        return [...active, newFlight];
+      });
+
+      // Impact event: When candidate arrives (~88% of flight time), trigger node pulse
+      const impactTimer = setTimeout(() => {
+        setLandedPartners((prev) => ({
+          ...prev,
+          [targetPartner.id]: Date.now(),
+        }));
+      }, flightDuration * 1000 * 0.88);
+
+      return () => clearTimeout(impactTimer);
+    },
+    [candidates, flightDuration, partners, paths]
+  );
+
+  // Continuous flight ticker
   useEffect(() => {
+    if (Object.keys(paths).length === 0) return;
+
     // Launch initial wave
     launchCandidateFlight();
-    const initialDelayTimer = setTimeout(() => launchCandidateFlight(), 550);
+    const delayTimer = setTimeout(() => launchCandidateFlight(), 500);
 
-    // Continuous rhythmic flight ticker
-    const flightIntervalId = setInterval(() => {
+    const intervalId = setInterval(() => {
       launchCandidateFlight();
     }, flightInterval);
 
     return () => {
-      clearTimeout(initialDelayTimer);
-      clearInterval(flightIntervalId);
+      clearTimeout(delayTimer);
+      clearInterval(intervalId);
     };
-  }, [flightInterval, flightDuration, replayKey, partners]);
+  }, [paths, flightInterval, launchCandidateFlight, replayKey]);
 
   // Replay animation triggers
   const handleReplay = () => {
     setReplayKey((prev) => prev + 1);
     setTravelers([]);
     setLandedPartners({});
-    setDisplayNumber(0);
+    updateMeasuredPaths();
   };
 
   const handlePartnerHover = (partner: PartnerNode) => {
@@ -375,56 +375,46 @@ export default function RadialPlacementNetwork({
       {/* ==================================================================== */}
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 px-4">
         {/* Category Pill */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-sky-600 bg-sky-50/90 px-3.5 py-1.5 rounded-full border border-sky-100 shadow-2xs mb-3.5"
-        >
+        <div className="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-sky-600 bg-sky-50/90 px-3.5 py-1.5 rounded-full border border-sky-100 shadow-2xs mb-3.5">
           <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
           {badgeLabel}
-        </motion.div>
+        </div>
 
         {/* Headline */}
-        <motion.h2
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight whitespace-pre-line"
-        >
+        <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight whitespace-pre-line">
           {heading}
-        </motion.h2>
+        </h2>
 
         {/* Description */}
         {description && (
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xs sm:text-sm text-slate-600 mt-3.5 max-w-xl mx-auto leading-relaxed"
-          >
+          <p className="text-xs sm:text-sm text-slate-600 mt-3.5 max-w-xl mx-auto leading-relaxed">
             {description}
-          </motion.p>
+          </p>
         )}
       </div>
 
       {/* ==================================================================== */}
-      {/* DESKTOP & TABLET: RADIAL BEZIER NETWORK WITH TRAVELING AVATARS       */}
+      {/* DESKTOP & TABLET: PIXEL-PERFECT RADIAL TREE NETWORK                  */}
       {/* ==================================================================== */}
-      <div className="hidden md:block relative w-full max-w-6xl mx-auto h-[600px]">
+      <div
+        ref={containerRef}
+        className="hidden md:block relative w-full max-w-6xl mx-auto h-[620px]"
+      >
         {/* Soft Radial Ambient Radiance */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] bg-gradient-to-tr from-sky-200/25 via-indigo-100/30 to-purple-100/20 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-sky-200/25 via-indigo-100/30 to-purple-100/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
-        {/* SVG BEZIER CURVES & FLYING CANDIDATE BADGES */}
+        {/* ================================================================== */}
+        {/* SVG CONNECTOR LINES & HARDWARE-ACCELERATED TRAVELING AVATARS       */}
+        {/* (Runs in 1:1 real pixel coordinates matching the DOM elements!)    */}
+        {/* ================================================================== */}
         <svg
-          viewBox="0 0 1000 600"
           className="absolute inset-0 w-full h-full pointer-events-none z-0"
-          preserveAspectRatio="none"
+          style={{ width: '100%', height: '100%' }}
         >
           <defs>
             {/* Circular Clip for Candidate Portraits */}
             <clipPath id={`${uniqueId}-avatarClip`}>
-              <circle cx="0" cy="0" r="13" />
+              <circle cx="0" cy="0" r="14" />
             </clipPath>
 
             {/* Candidate Badge Drop Shadow */}
@@ -432,7 +422,7 @@ export default function RadialPlacementNetwork({
               <feDropShadow dx="0" dy="3" stdDeviation="3" floodColor="rgba(15,23,42,0.25)" />
             </filter>
 
-            {/* Active Beam Gradient */}
+            {/* Neon Active Beam Gradient */}
             <linearGradient id={`${uniqueId}-beamGrad`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#38bdf8" />
               <stop offset="50%" stopColor="#6366f1" />
@@ -449,8 +439,11 @@ export default function RadialPlacementNetwork({
             </filter>
           </defs>
 
-          {/* 1. BASE SOLID CONNECTOR CURVES */}
+          {/* 1. BASE CONNECTOR LINES (SOLID, SOFT SKY-BLUE, PHYSICALLY CONNECTED) */}
           {partners.map((partner) => {
+            const pathData = paths[partner.id];
+            if (!pathData) return null;
+
             const isHovered = hoveredPartner === partner.name;
             const hasFlight = travelers.some((t) => t.partnerId === partner.id);
             const isLanded = landedPartners[partner.id] && Date.now() - landedPartners[partner.id] < 1200;
@@ -458,8 +451,8 @@ export default function RadialPlacementNetwork({
 
             return (
               <path
-                key={`base-curve-${partner.id}`}
-                d={partner.curve}
+                key={`base-line-${partner.id}`}
+                d={pathData.d}
                 fill="none"
                 stroke={isLit ? '#818cf8' : '#cbd5e1'}
                 strokeWidth={isLit ? 2.5 : 1.5}
@@ -472,6 +465,9 @@ export default function RadialPlacementNetwork({
 
           {/* 2. ACTIVE GLOWING LASER BEAMS FOR TRAVELERS & HOVER */}
           {partners.map((partner) => {
+            const pathData = paths[partner.id];
+            if (!pathData) return null;
+
             const isHovered = hoveredPartner === partner.name;
             const hasFlight = travelers.some((t) => t.partnerId === partner.id);
             const isLanded = landedPartners[partner.id] && Date.now() - landedPartners[partner.id] < 1200;
@@ -481,18 +477,16 @@ export default function RadialPlacementNetwork({
 
             return (
               <g key={`glow-beam-${partner.id}`}>
-                {/* Diffuse Outer Glow */}
                 <path
-                  d={partner.curve}
+                  d={pathData.d}
                   fill="none"
                   stroke="#818cf8"
                   strokeWidth="5.5"
                   strokeOpacity="0.32"
                   strokeLinecap="round"
                 />
-                {/* Core Neon Gradient Pulse */}
                 <path
-                  d={partner.curve}
+                  d={pathData.d}
                   fill="none"
                   stroke={`url(#${uniqueId}-beamGrad)`}
                   strokeWidth="2.8"
@@ -503,18 +497,18 @@ export default function RadialPlacementNetwork({
             );
           })}
 
-          {/* 3. HARDWARE-ACCELERATED TRAVELING CANDIDATE AVATARS */}
+          {/* 3. HARDWARE-ACCELERATED TRAVELING CANDIDATE AVATARS (60FPS) */}
           {travelers.map((trv) => (
             <g key={trv.id}>
-              {/* Bézier Path Motion */}
+              {/* GPU Path Motion */}
               <animateMotion
-                path={trv.curve}
+                path={trv.pathD}
                 dur={`${trv.duration}s`}
                 fill="freeze"
                 rotate="0"
               />
 
-              {/* Start Fade-In & Landing Fade-Out */}
+              {/* Smooth Start Fade-In & Landing Fade-Out */}
               <animate
                 attributeName="opacity"
                 values="0; 1; 1; 0.95; 0"
@@ -523,7 +517,7 @@ export default function RadialPlacementNetwork({
                 fill="freeze"
               />
 
-              {/* Scale Transitions */}
+              {/* Gentle Scale */}
               <animateTransform
                 attributeName="transform"
                 type="scale"
@@ -534,23 +528,23 @@ export default function RadialPlacementNetwork({
                 additive="sum"
               />
 
-              {/* Cyan Energy Ring Pulse */}
-              <circle cx="0" cy="0" r="16" fill="none" stroke="#38bdf8" strokeWidth="1.2" opacity="0.65">
-                <animate attributeName="r" values="14; 20; 14" dur="1.2s" repeatCount="indefinite" />
+              {/* Outer Cyan Energy Ring Pulse */}
+              <circle cx="0" cy="0" r="17" fill="none" stroke="#38bdf8" strokeWidth="1.2" opacity="0.65">
+                <animate attributeName="r" values="14; 21; 14" dur="1.2s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.8; 0.15; 0.8" dur="1.2s" repeatCount="indefinite" />
               </circle>
 
               {/* Crisp White Drop-Shadow Shell */}
-              <circle cx="0" cy="0" r="14.5" fill="#ffffff" filter={`url(#${uniqueId}-dropShadow)`} />
-              <circle cx="0" cy="0" r="14" fill="none" stroke="#6366f1" strokeWidth="1.6" />
+              <circle cx="0" cy="0" r="15" fill="#ffffff" filter={`url(#${uniqueId}-dropShadow)`} />
+              <circle cx="0" cy="0" r="14.5" fill="none" stroke="#6366f1" strokeWidth="1.6" />
 
-              {/* Candidate Portrait Image */}
+              {/* Student Portrait Image */}
               <image
                 href={trv.candidate.avatar}
-                x="-13"
-                y="-13"
-                width="26"
-                height="26"
+                x="-14"
+                y="-14"
+                width="28"
+                height="28"
                 clipPath={`url(#${uniqueId}-avatarClip)`}
                 preserveAspectRatio="xMidYMid slice"
               />
@@ -561,27 +555,15 @@ export default function RadialPlacementNetwork({
         {/* ================================================================== */}
         {/* PROMINENT CENTRAL HUB CARD                                         */}
         {/* ================================================================== */}
-        <motion.div
+        <div
+          ref={centerCardRef}
           onClick={handleReplay}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center text-center p-4 cursor-pointer group select-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center text-center p-4 cursor-pointer group select-none transition-transform hover:scale-103"
           style={{ width: 250 }}
-          title="Click to replay count-up & placement sequence"
+          title="Click to replay metric count-up and placement wave"
         >
           {/* Luminous Pulsing Aura */}
-          <motion.div
-            animate={{
-              scale: [1, 1.15, 1],
-              opacity: [0.35, 0.65, 0.35],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="absolute inset-0 -m-8 rounded-full bg-gradient-to-tr from-sky-300/40 via-indigo-300/30 to-purple-300/40 blur-2xl pointer-events-none -z-10"
-          />
+          <div className="absolute inset-0 -m-8 rounded-full bg-gradient-to-tr from-sky-300/40 via-indigo-300/30 to-purple-300/40 blur-2xl pointer-events-none -z-10 animate-pulse" />
 
           {/* Company Logo */}
           <div className="h-14 flex items-center justify-center mb-1">
@@ -592,16 +574,16 @@ export default function RadialPlacementNetwork({
             />
           </div>
 
-          {/* Animated Count-Up Number (0+ to 3,000+) */}
-          <div className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-mono my-0.5">
-            {displayNumber.toLocaleString()}+
+          {/* Isolated Animated Metric Count-Up */}
+          <div className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight my-0.5">
+            <CountUpMetric target={targetCount} duration={countDuration} replayKey={replayKey} />
           </div>
 
           {/* Subtitle Badge */}
           <div className="text-[11px] font-extrabold tracking-[0.22em] uppercase text-indigo-700 bg-indigo-50/90 px-3.5 py-1 rounded-full border border-indigo-200/80 shadow-2xs mt-0.5 group-hover:bg-indigo-100 transition-colors">
             {centerSubtitle}
           </div>
-        </motion.div>
+        </div>
 
         {/* ================================================================== */}
         {/* SATELLITE PARTNER NODES (FLOATING/BOBBING IDLE ANIMATION)           */}
@@ -613,12 +595,13 @@ export default function RadialPlacementNetwork({
           const isActive = isHovered || isLanded || hasFlight;
 
           // Staggered floating oscillation parameters
-          const bobDuration = 3.2 + (index % 4) * 0.5; // 3.2s, 3.7s, 4.2s, 4.7s
-          const bobDelay = (index % 6) * 0.25;
+          const bobDuration = 3.2 + (index % 4) * 0.5;
+          const bobDelay = (index % 5) * 0.25;
 
           return (
             <motion.div
               key={partner.id}
+              ref={(el) => (cardRefs.current[partner.id] = el)}
               onClick={() => onPartnerClick && onPartnerClick(partner)}
               onMouseEnter={() => handlePartnerHover(partner)}
               onMouseLeave={() => setHoveredPartner(null)}
@@ -629,8 +612,8 @@ export default function RadialPlacementNetwork({
                 y: [0, -6, 0],
               }}
               transition={{
-                scale: { duration: 0.5, delay: index * 0.04, ease: 'easeOut' },
-                opacity: { duration: 0.5, delay: index * 0.04 },
+                scale: { duration: 0.5, delay: index * 0.03, ease: 'easeOut' },
+                opacity: { duration: 0.5, delay: index * 0.03 },
                 y: {
                   duration: bobDuration,
                   repeat: Infinity,
@@ -646,8 +629,8 @@ export default function RadialPlacementNetwork({
               }}
               className="absolute z-10 flex items-center justify-center cursor-pointer"
               style={{
-                left: `${partner.x / 10}%`,
-                top: `${partner.y / 6}%`,
+                left: `${partner.leftPercent}%`,
+                top: `${partner.topPercent}%`,
                 transform: 'translate(-50%, -50%)',
                 width: partner.w || 120,
                 height: partner.h || 64,
@@ -686,20 +669,15 @@ export default function RadialPlacementNetwork({
         })}
 
         {/* Live Network Activity Indicator Pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-semibold text-indigo-700 bg-white/95 backdrop-blur-md py-1.5 px-4 rounded-full border border-indigo-100 shadow-sm transition-all flex items-center gap-2"
-        >
+        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-semibold text-indigo-700 bg-white/95 backdrop-blur-md py-1.5 px-4 rounded-full border border-indigo-100 shadow-sm transition-all flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>
             Active Placement Streams:{' '}
             <strong className="text-purple-800 font-bold">
-              {hoveredPartner ? `Dispatching to ${hoveredPartner}` : '60 FPS Concurrent Network'}
+              {hoveredPartner ? `Dispatching to ${hoveredPartner}` : 'Continuous 60fps Network'}
             </strong>
           </span>
-        </motion.div>
+        </div>
       </div>
 
       {/* ==================================================================== */}
@@ -707,9 +685,8 @@ export default function RadialPlacementNetwork({
       {/* ==================================================================== */}
       <div className="block md:hidden relative p-5 rounded-3xl bg-gradient-to-b from-white via-sky-50/20 to-white border border-slate-200/80 shadow-md mx-4">
         {/* Mobile Center Hub */}
-        <motion.div
+        <div
           onClick={handleReplay}
-          whileTap={{ scale: 0.98 }}
           className="text-center flex flex-col items-center justify-center mb-6 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm relative overflow-hidden cursor-pointer"
         >
           <div className="absolute inset-0 bg-gradient-to-tr from-sky-200/30 via-indigo-100/20 to-purple-100/30 blur-xl pointer-events-none" />
@@ -719,12 +696,12 @@ export default function RadialPlacementNetwork({
             className="h-10 w-auto object-contain mix-blend-multiply mb-1 relative z-10"
           />
           <div className="text-3xl font-black text-slate-900 tracking-tight font-mono my-1 relative z-10">
-            {displayNumber.toLocaleString()}+
+            <CountUpMetric target={targetCount} duration={countDuration} replayKey={replayKey} />
           </div>
           <div className="text-[10px] font-extrabold tracking-[0.2em] uppercase text-indigo-700 bg-indigo-50 px-3 py-0.5 rounded-full border border-indigo-200 relative z-10">
             {centerSubtitle}
           </div>
-        </motion.div>
+        </div>
 
         {/* Mobile Partners Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -765,14 +742,9 @@ export default function RadialPlacementNetwork({
       {/* SECTION FOOTER SUBTEXT                                               */}
       {/* ==================================================================== */}
       {footerText && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-xs sm:text-sm text-slate-500 text-center max-w-2xl mx-auto mt-8 px-4 leading-relaxed"
-        >
+        <p className="text-xs sm:text-sm text-slate-500 text-center max-w-2xl mx-auto mt-8 px-4 leading-relaxed">
           {footerText}
-        </motion.p>
+        </p>
       )}
     </section>
   );
