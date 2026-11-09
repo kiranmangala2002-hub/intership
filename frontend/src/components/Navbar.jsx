@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Home, Layers, Compass, Sparkles, HelpCircle, ClipboardList } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home' },
-  { id: 'domains', label: 'Domains' },
-  { id: 'journey', label: 'Journey' },
-  { id: 'perks', label: 'Benefits' },
-  { id: 'faq', label: 'FAQ' },
-  { id: 'applications', label: 'Applications' },
+  { id: 'home', label: 'Home', icon: Home },
+  { id: 'domains', label: 'Domains', icon: Layers },
+  { id: 'journey', label: 'Journey', icon: Compass },
+  { id: 'perks', label: 'Benefits', icon: Sparkles },
+  { id: 'faq', label: 'FAQ', icon: HelpCircle },
+  { id: 'applications', label: 'Applications', icon: ClipboardList },
 ];
 
 export default function Navbar({
@@ -18,6 +19,35 @@ export default function Navbar({
   onLogout,
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0, opacity: 0 });
+
+  const navRef = useRef(null);
+  const itemRefs = useRef({});
+
+  // Recalculate slider pill position smoothly whenever activePage changes or window resizes
+  const updateSlider = () => {
+    const activeBtn = itemRefs.current[activePage];
+    const navContainer = navRef.current;
+    if (activeBtn && navContainer) {
+      const navRect = navContainer.getBoundingClientRect();
+      const btnRect = activeBtn.getBoundingClientRect();
+      setSliderStyle({
+        left: btnRect.left - navRect.left,
+        width: btnRect.width,
+        opacity: 1,
+      });
+    }
+  };
+
+  useEffect(() => {
+    updateSlider();
+    const timer = setTimeout(updateSlider, 60);
+    window.addEventListener('resize', updateSlider);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', updateSlider);
+    };
+  }, [activePage]);
 
   const handleNavClick = (id) => {
     onNavigate(id);
@@ -43,28 +73,48 @@ export default function Navbar({
           </button>
         </div>
 
-        {/* Center Section: Desktop Navigation Links with Magnetic Active Pill */}
-        <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-lavender-100/60 border border-lavender-200/50 shadow-inner">
+        {/* Center Section: Desktop Navigation Links with Smooth Magnetic Sliding Active Pill */}
+        <nav
+          ref={navRef}
+          className="relative hidden md:flex items-center gap-1 p-1 rounded-full bg-lavender-100/70 border border-lavender-200/60 shadow-inner"
+        >
+          {/* Smooth, Simple, Slow Sliding Active Background Pill */}
+          <div
+            className="absolute top-1 bottom-1 rounded-full bg-white shadow-[0_4px_16px_rgba(124,58,237,0.15)] border border-lavender-200/90 pointer-events-none will-change-transform z-0"
+            style={{
+              transform: `translateX(${sliderStyle.left}px)`,
+              width: `${sliderStyle.width}px`,
+              opacity: sliderStyle.opacity,
+              transition:
+                'transform 650ms cubic-bezier(0.25, 1, 0.5, 1), width 550ms cubic-bezier(0.25, 1, 0.5, 1), opacity 300ms ease',
+            }}
+          >
+            {/* Active glowing accent indicator bar at the bottom */}
+            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 shadow-[0_0_8px_rgba(124,58,237,0.7)]" />
+          </div>
+
           {NAV_ITEMS.map((item) => {
             const isActive = activePage === item.id;
+            const Icon = item.icon;
             return (
               <button
                 key={item.id}
+                ref={(el) => (itemRefs.current[item.id] = el)}
                 onClick={() => handleNavClick(item.id)}
-                className={`relative px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 group flex flex-col items-center justify-center ${
+                className={`relative z-10 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-300 group flex items-center gap-1.5 focus:outline-none ${
                   isActive
-                    ? 'text-purple-950 bg-white shadow-[0_2px_10px_rgba(124,58,237,0.12)] border border-lavender-200/80 scale-105'
-                    : 'text-lavender-700 hover:text-purple-950 hover:bg-white/80 hover:-translate-y-0.5 hover:shadow-[0_2px_8px_rgba(124,58,237,0.06)]'
+                    ? 'text-purple-950 font-black scale-102'
+                    : 'text-lavender-700 hover:text-purple-900'
                 }`}
               >
-                <span>{item.label}</span>
-
-                {/* Active indicator dot/bar */}
-                {isActive ? (
-                  <span className="absolute bottom-1 w-3 h-0.5 rounded-full bg-purple-600" />
-                ) : (
-                  <span className="absolute bottom-1 w-0 h-0.5 rounded-full bg-purple-400 group-hover:w-3 transition-all duration-200" />
-                )}
+                <Icon
+                  className={`w-3.5 h-3.5 transition-all duration-500 ease-out ${
+                    isActive
+                      ? 'text-purple-600 scale-110 drop-shadow-[0_2px_4px_rgba(124,58,237,0.35)]'
+                      : 'text-lavender-500 group-hover:text-purple-600 group-hover:scale-110'
+                  }`}
+                />
+                <span className="transition-colors duration-300">{item.label}</span>
               </button>
             );
           })}
@@ -136,19 +186,24 @@ export default function Navbar({
       {isMobileMenuOpen && (
         <div className="md:hidden mt-2 p-4 rounded-3xl bg-white/95 backdrop-blur-2xl border border-lavender-200/90 shadow-[0_15px_35px_rgba(124,58,237,0.15)] animate-cool-page">
           <div className="grid grid-cols-2 gap-2 mb-3">
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all text-center ${
-                  activePage === item.id
-                    ? 'bg-purple-600 text-white shadow-sm'
-                    : 'text-lavender-800 hover:bg-lavender-100/70'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+              const isActive = activePage === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                    isActive
+                      ? 'bg-purple-600 text-white shadow-sm'
+                      : 'text-lavender-800 hover:bg-lavender-100/70'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Mobile Auth / Call to Action */}
