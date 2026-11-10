@@ -34,15 +34,20 @@ export async function syncApplicationsToMongo() {
   }
 
   const rawData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  console.log(`Checking ${rawData.length} applications from applications.json against MongoDB...`);
+  console.log(`Synchronizing ${rawData.length} Telugu student applications with Anantapur district colleges to MongoDB...`);
 
-  let added = 0;
+  // Remove any legacy placeholder records from MongoDB that do not match the valid IDs
+  const validIds = rawData.map((d) => d.applicationId);
+  const deleteResult = await Application.deleteMany({ applicationId: { $nin: validIds } });
+  if (deleteResult.deletedCount > 0) {
+    console.log(`Cleaned up ${deleteResult.deletedCount} legacy records from MongoDB.`);
+  }
+
+  let synced = 0;
   for (const item of rawData) {
-    const existing = await Application.findOne({
-      $or: [{ applicationId: item.applicationId }, { email: item.email }],
-    });
-    if (!existing) {
-      await Application.create({
+    await Application.findOneAndUpdate(
+      { applicationId: item.applicationId },
+      {
         applicationId: item.applicationId,
         name: item.name,
         contact: item.contact,
@@ -54,15 +59,16 @@ export async function syncApplicationsToMongo() {
         photoUrl: item.photoUrl,
         status: item.status || 'Submitted',
         createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
-        updatedAt: item.updatedAt ? new Date(item.updatedAt) : new Date(),
-      });
-      console.log(`Synced to MongoDB: ${item.applicationId} (${item.name})`);
-      added++;
-    }
+        updatedAt: new Date(),
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    console.log(`✅ Synced to MongoDB: ${item.applicationId} - ${item.name} (${item.collegeName})`);
+    synced++;
   }
 
   const total = await Application.countDocuments();
-  console.log(`MongoDB sync complete. Added: ${added}, Total in MongoDB: ${total}`);
+  console.log(`MongoDB sync complete. Synced: ${synced}, Total in MongoDB: ${total}`);
   return total;
 }
 

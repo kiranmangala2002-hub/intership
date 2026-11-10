@@ -11,19 +11,19 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Initial seed data for Applications
+// Initial seed data for Applications (Telugu States & Anantapur District Colleges)
 const SEED_APPLICATIONS = [
   {
     _id: 'app-seed-001',
     id: 'app-seed-001',
     applicationId: 'SPH-2026-8841',
-    name: 'Rahul Sharma',
+    name: 'P. Charan Kumar',
     contact: '+91 9876543210',
-    collegeName: 'National Institute of Technology',
+    collegeName: 'PVKK Institute of Technology (PVKKIT), Anantapur',
     passoutYear: '2025',
-    email: 'rahul.sharma@example.com',
+    email: 'charan.kumar@example.com',
     domain: 'AI Integrated Full Stack Development',
-    resumeName: 'Rahul_Sharma_Resume.pdf',
+    resumeName: 'Charan_Kumar_PVKK_Resume.pdf',
     photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     status: 'Shortlisted',
     createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
@@ -33,13 +33,13 @@ const SEED_APPLICATIONS = [
     _id: 'app-seed-002',
     id: 'app-seed-002',
     applicationId: 'SPH-2026-9214',
-    name: 'Priya Patel',
+    name: 'S. Navya Sree',
     contact: '+91 9811223344',
-    collegeName: 'Vellore Institute of Technology',
+    collegeName: 'Anantha Lakshmi Institute of Technology & Sciences (ALITS), Anantapur',
     passoutYear: '2026',
-    email: 'priya.patel@example.com',
+    email: 'navya.sree@example.com',
     domain: 'Embedded Systems & IoT',
-    resumeName: 'Priya_Patel_IoT_CV.pdf',
+    resumeName: 'Navya_Sree_ALITS_IoT_CV.pdf',
     photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
     status: 'Under Review',
     createdAt: new Date(Date.now() - 86400000).toISOString(),

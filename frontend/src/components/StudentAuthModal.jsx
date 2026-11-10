@@ -401,7 +401,7 @@ export default function StudentAuthModal({
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. Alex Johnson"
+                      placeholder="e.g. K. Sai Teja Reddy"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
@@ -427,16 +427,28 @@ export default function StudentAuthModal({
                   {/* College Name */}
                   <div>
                     <label className="block text-xs font-bold text-lavender-900 mb-1">
-                      College / University *
+                      College / University (Anantapur Dist) *
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. IIT Madras / BITS Pilani"
+                      list="anantapur-colleges-list"
+                      placeholder="e.g. JNTUA College of Engineering, Anantapur / SRIT"
                       value={formData.collegeName}
                       onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-lavender-950 placeholder-lavender-400 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
+                    <datalist id="anantapur-colleges-list">
+                      <option value="JNTUA College of Engineering, Anantapur" />
+                      <option value="Srinivasa Ramanujan Institute of Technology (SRIT), Rotarypuram, Anantapur" />
+                      <option value="Sri Krishnadevaraya University College of Engineering (SKUCE), Anantapur" />
+                      <option value="Anantha Lakshmi Institute of Technology & Sciences (ALITS), Anantapur" />
+                      <option value="PVKK Institute of Technology (PVKKIT), Anantapur" />
+                      <option value="Gates Institute of Technology, Gooty, Anantapur Dist" />
+                      <option value="Intell Engineering College, Anantapur" />
+                      <option value="Chiranjeevi Reddy Institute of Engineering & Technology (CRIT), Anantapur" />
+                      <option value="Sir C.V. Raman Institute of Technology and Sciences, Tadipatri, Anantapur Dist" />
+                    </datalist>
                   </div>
 
                   {/* Passout Year */}

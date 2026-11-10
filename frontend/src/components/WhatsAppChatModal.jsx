@@ -98,7 +98,7 @@ export default function WhatsAppChatModal({ isOpen, onClose }) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Rahul Sharma"
+              placeholder="e.g. K. Sai Teja Reddy"
               className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/60 border border-lavender-200 text-lavender-950 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#25D366] transition-all"
             />
           </div>
