@@ -363,36 +363,6 @@ export default function StudentAuthModal({
                   </p>
                 </div>
 
-                {/* Photo Upload with Live Avatar Preview */}
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-lavender-50/70 border border-lavender-200/80">
-                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-lavender-400 shadow-sm flex items-center justify-center bg-white flex-shrink-0">
-                    {photoPreview ? (
-                      <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-2xl">📷</span>
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <label className="text-xs font-bold text-lavender-800">
-                      Profile Photo (Optional)
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePhotoChange}
-                      className="hidden"
-                      id="modal-student-photo"
-                    />
-                    <label
-                      htmlFor="modal-student-photo"
-                      className="inline-block px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white hover:bg-purple-700 cursor-pointer w-fit transition-colors"
-                    >
-                      Choose Photo...
-                    </label>
-                    <span className="text-[11px] text-lavender-500">JPG, PNG up to 2MB</span>
-                  </div>
-                </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {/* Name */}
                   <div>

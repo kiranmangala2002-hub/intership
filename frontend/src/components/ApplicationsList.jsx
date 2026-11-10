@@ -52,17 +52,9 @@ export default function ApplicationsList({
                 {/* Header Profile Row */}
                 <div className="flex justify-between items-start gap-3 mb-4">
                   <div className="flex items-center gap-3">
-                    {app.photoUrl ? (
-                      <img
-                        src={app.photoUrl}
-                        alt={app.name}
-                        className="w-13 h-13 w-[52px] h-[52px] rounded-full object-cover border-2 border-lavender-300 shadow-sm"
-                      />
-                    ) : (
-                      <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-lavender-500 to-lavender-700 text-white font-bold text-lg flex items-center justify-center shadow-sm">
-                        {app.name?.charAt(0)?.toUpperCase() || 'S'}
-                      </div>
-                    )}
+                    <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-lavender-500 to-lavender-700 text-white font-bold text-lg flex items-center justify-center shadow-sm flex-shrink-0">
+                      {app.name?.charAt(0)?.toUpperCase() || 'S'}
+                    </div>
                     <div>
                       <h4 className="font-extrabold text-lavender-950 text-base leading-tight">
                         {app.name}

@@ -499,17 +499,9 @@ export default function ApplicationsPage({
                       {/* Header Profile Row */}
                       <div className="flex justify-between items-start gap-3 mb-3.5">
                         <div className="flex items-center gap-3">
-                          {app.photoUrl ? (
-                            <img
-                              src={app.photoUrl}
-                              alt={app.name}
-                              className="w-12 h-12 rounded-2xl object-cover border-2 border-lavender-300 shadow-2xs"
-                            />
-                          ) : (
-                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-2xs flex-shrink-0">
-                              {app.name?.charAt(0)?.toUpperCase() || 'S'}
-                            </div>
-                          )}
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-2xs flex-shrink-0">
+                            {app.name?.charAt(0)?.toUpperCase() || 'S'}
+                          </div>
                           <div>
                             <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
                               {app.name}
@@ -955,17 +947,9 @@ export default function ApplicationsPage({
               {/* Header */}
               <div className="p-6 border-b border-lavender-100 flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3.5">
-                  {selectedApplicant.photoUrl ? (
-                    <img
-                      src={selectedApplicant.photoUrl}
-                      alt={selectedApplicant.name}
-                      className="w-14 h-14 rounded-2xl object-cover border-2 border-lavender-200 shadow-2xs"
-                    />
-                  ) : (
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-2xs">
-                      {selectedApplicant.name?.charAt(0)?.toUpperCase() || 'S'}
-                    </div>
-                  )}
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-2xs flex-shrink-0">
+                    {selectedApplicant.name?.charAt(0)?.toUpperCase() || 'S'}
+                  </div>
                   <div>
                     <span className="text-[11px] font-mono font-bold text-purple-700 block">
                       {selectedApplicant.applicationId || 'SPH-2026'}
