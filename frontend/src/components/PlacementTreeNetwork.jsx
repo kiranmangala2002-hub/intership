@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 
-// Top Corporate Hiring Partners with official logos and industries (Packages between ₹3.8 LPA and ₹12.0 LPA)
+// Top Corporate Hiring Partners with official logos and industries (Packages strictly > 4.0 LPA and < 10.0 LPA)
 const HIRING_PARTNERS_ROW_1 = [
-  { id: 'google', name: 'Google', logo: '/companies/google.png', industry: 'Cloud & AI Systems', ctc: '₹11.8 LPA' },
-  { id: 'intel', name: 'Intel', logo: '/companies/intel.png', industry: 'Semiconductors & Edge AI', ctc: '₹10.8 LPA' },
-  { id: 'tcs', name: 'TCS Digital', logo: '/companies/tcs.png', industry: 'Enterprise Platforms', ctc: '₹7.2 LPA' },
-  { id: 'arm', name: 'ARM', logo: '/companies/arm.png', industry: 'Architecture & Kernels', ctc: '₹11.2 LPA' },
-  { id: 'bosch', name: 'Bosch', logo: '/companies/bosch.png', industry: 'Mobility & Automotive IoT', ctc: '₹9.8 LPA' },
-  { id: 'infosys', name: 'Infosys', logo: '/companies/infosys.png', industry: 'Full Stack Engineering', ctc: '₹6.8 LPA' },
+  { id: 'google', name: 'Google', logo: '/companies/google.png', industry: 'Cloud & AI Systems', ctc: '₹9.8 LPA' },
+  { id: 'intel', name: 'Intel', logo: '/companies/intel.png', industry: 'Semiconductors & Edge AI', ctc: '₹8.8 LPA' },
+  { id: 'tcs', name: 'TCS Digital', logo: '/companies/tcs.png', industry: 'Enterprise Platforms', ctc: '₹5.8 LPA' },
+  { id: 'arm', name: 'ARM', logo: '/companies/arm.png', industry: 'Architecture & Kernels', ctc: '₹9.2 LPA' },
+  { id: 'bosch', name: 'Bosch', logo: '/companies/bosch.png', industry: 'Mobility & Automotive IoT', ctc: '₹8.4 LPA' },
+  { id: 'infosys', name: 'Infosys', logo: '/companies/infosys.png', industry: 'Full Stack Engineering', ctc: '₹5.2 LPA' },
 ];
 
 const HIRING_PARTNERS_ROW_2 = [
-  { id: 'amd', name: 'AMD', logo: '/companies/amd.png', industry: 'Processors & Validation', ctc: '₹11.5 LPA' },
-  { id: 'capgemini', name: 'Capgemini', logo: '/companies/capgemini.png', industry: 'Cloud Architecture', ctc: '₹8.4 LPA' },
-  { id: 'microchip', name: 'Microchip', logo: '/companies/microchip.png', industry: 'Microcontrollers & Firmware', ctc: '₹9.6 LPA' },
-  { id: 'cognizant', name: 'Cognizant', logo: '/companies/cognizant.png', industry: 'Software Solutions', ctc: '₹6.5 LPA' },
-  { id: 'accenture', name: 'Accenture', logo: '/companies/accenture.png', industry: 'Digital Platforms', ctc: '₹7.5 LPA' },
-  { id: 'verizon', name: 'Verizon', logo: '/companies/verizon.png', industry: 'Network Automation', ctc: '₹8.8 LPA' },
+  { id: 'amd', name: 'AMD', logo: '/companies/amd.png', industry: 'Processors & Validation', ctc: '₹9.5 LPA' },
+  { id: 'capgemini', name: 'Capgemini', logo: '/companies/capgemini.png', industry: 'Cloud Architecture', ctc: '₹6.8 LPA' },
+  { id: 'microchip', name: 'Microchip', logo: '/companies/microchip.png', industry: 'Microcontrollers & Firmware', ctc: '₹7.8 LPA' },
+  { id: 'cognizant', name: 'Cognizant', logo: '/companies/cognizant.png', industry: 'Software Solutions', ctc: '₹4.8 LPA' },
+  { id: 'accenture', name: 'Accenture', logo: '/companies/accenture.png', industry: 'Digital Platforms', ctc: '₹6.2 LPA' },
+  { id: 'verizon', name: 'Verizon', logo: '/companies/verizon.png', industry: 'Network Automation', ctc: '₹7.2 LPA' },
 ];
 
 // Verified Placed Alumni from Telugu States and Anantapur District Colleges
@@ -30,7 +30,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'Google',
     companyLogo: '/companies/google.png',
     role: 'AI Systems Engineer',
-    package: '₹11.8 LPA',
+    package: '₹9.8 LPA',
     batch: 'Class of 2026',
     initial: 'K',
   },
@@ -43,7 +43,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'Infosys',
     companyLogo: '/companies/infosys.png',
     role: 'Full Stack Specialist',
-    package: '₹6.8 LPA',
+    package: '₹5.2 LPA',
     batch: 'Class of 2026',
     initial: 'M',
   },
@@ -56,7 +56,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'Intel',
     companyLogo: '/companies/intel.png',
     role: 'IoT Edge Firmware Developer',
-    package: '₹10.8 LPA',
+    package: '₹8.8 LPA',
     batch: 'Class of 2026',
     initial: 'B',
   },
@@ -69,7 +69,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'TCS Digital',
     companyLogo: '/companies/tcs.png',
     role: 'Cloud Platform Architect',
-    package: '₹7.2 LPA',
+    package: '₹5.8 LPA',
     batch: 'Class of 2025',
     initial: 'P',
   },
@@ -82,7 +82,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'Microchip',
     companyLogo: '/companies/microchip.png',
     role: 'Embedded Firmware & TinyML',
-    package: '₹9.6 LPA',
+    package: '₹7.8 LPA',
     batch: 'Class of 2026',
     initial: 'S',
   },
@@ -95,7 +95,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'AMD',
     companyLogo: '/companies/amd.png',
     role: 'Hardware Validation Engineer',
-    package: '₹11.5 LPA',
+    package: '₹9.5 LPA',
     batch: 'Class of 2026',
     initial: 'V',
   },
@@ -108,7 +108,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'Capgemini',
     companyLogo: '/companies/capgemini.png',
     role: 'Backend Systems Architect',
-    package: '₹8.4 LPA',
+    package: '₹6.8 LPA',
     batch: 'Class of 2026',
     initial: 'G',
   },
@@ -121,7 +121,7 @@ const ALUMNI_PLACEMENTS = [
     company: 'Bosch',
     companyLogo: '/companies/bosch.png',
     role: 'Automotive Embedded Systems',
-    package: '₹9.8 LPA',
+    package: '₹8.4 LPA',
     batch: 'Class of 2025',
     initial: 'M',
   },
@@ -177,7 +177,7 @@ export default function PlacementTreeNetwork() {
             </span>
           </div>
           <div className="p-3 text-center border-r border-lavender-100 last:border-r-0">
-            <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">₹11.8 LPA</span>
+            <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">₹9.8 LPA</span>
             <span className="text-[10px] sm:text-[11px] font-bold text-lavender-600 uppercase tracking-wider">
               Top CTC Package
             </span>
