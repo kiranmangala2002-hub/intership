@@ -397,27 +397,29 @@ export default function StudentAuthModal({
                   {/* College Name */}
                   <div>
                     <label className="block text-xs font-bold text-lavender-900 mb-1">
-                      College / University (Anantapur Dist) *
+                      College / University (Rayalaseema Region) *
                     </label>
                     <input
                       type="text"
-                      list="anantapur-colleges-list"
-                      placeholder="e.g. JNTUA College of Engineering, Anantapur / SRIT"
+                      list="rayalaseema-colleges-list"
+                      placeholder="e.g. SVUCE Tirupati / GPREC Kurnool / RGMCET"
                       value={formData.collegeName}
                       onChange={(e) => setFormData({ ...formData, collegeName: e.target.value })}
                       required
                       className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-lavender-950 placeholder-lavender-400 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                     />
-                    <datalist id="anantapur-colleges-list">
-                      <option value="JNTUA College of Engineering, Anantapur" />
-                      <option value="Srinivasa Ramanujan Institute of Technology (SRIT), Rotarypuram, Anantapur" />
-                      <option value="Sri Krishnadevaraya University College of Engineering (SKUCE), Anantapur" />
-                      <option value="Anantha Lakshmi Institute of Technology & Sciences (ALITS), Anantapur" />
-                      <option value="PVKK Institute of Technology (PVKKIT), Anantapur" />
-                      <option value="Gates Institute of Technology, Gooty, Anantapur Dist" />
-                      <option value="Intell Engineering College, Anantapur" />
-                      <option value="Chiranjeevi Reddy Institute of Engineering & Technology (CRIT), Anantapur" />
-                      <option value="Sir C.V. Raman Institute of Technology and Sciences, Tadipatri, Anantapur Dist" />
+                    <datalist id="rayalaseema-colleges-list">
+                      <option value="Sri Venkateswara University College of Engineering (SVUCE), Tirupati" />
+                      <option value="G. Pulla Reddy Engineering College (GPREC), Kurnool" />
+                      <option value="Rajeev Gandhi Memorial College of Engineering & Technology (RGMCET), Nandyal" />
+                      <option value="Madanapalle Institute of Technology & Science (MITS), Chittoor Dist" />
+                      <option value="K.S.R.M. College of Engineering (KSRMCE), Kadapa" />
+                      <option value="Sree Vidyanikethan Engineering College, Tirupati" />
+                      <option value="YSR Engineering College of Yogi Vemana University, Proddatur, Kadapa Dist" />
+                      <option value="G. Pullaiah College of Engineering and Technology (GPCET), Kurnool" />
+                      <option value="Sri Venkateswara College of Engineering and Technology (SVCET), Chittoor" />
+                      <option value="Santhiram Engineering College (SREC), Nandyal" />
+                      <option value="Annamacharya Institute of Technology & Sciences (AITS), Rajampet, Kadapa Dist" />
                     </datalist>
                   </div>
 

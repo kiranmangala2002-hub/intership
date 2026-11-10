@@ -19,12 +19,12 @@ const HIRING_PARTNERS_ROW_2 = [
   { id: 'verizon', name: 'Verizon', logo: '/companies/verizon.png', industry: 'Network Automation', ctc: '₹7.2 LPA' },
 ];
 
-// Verified Placed Alumni from Telugu States and Anantapur District Colleges
+// Verified Placed Alumni from Premier Rayalaseema Region Engineering Colleges
 const ALUMNI_PLACEMENTS = [
   {
     id: 1,
     studentName: 'K. Sai Teja Reddy',
-    college: 'JNTUA College of Engineering, Anantapur',
+    college: 'Sri Venkateswara University College of Engineering (SVUCE), Tirupati',
     domain: 'AI Integrated Full Stack Development',
     domainTag: 'Full Stack',
     company: 'Google',
@@ -37,7 +37,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 2,
     studentName: 'M. Harika Chowdary',
-    college: 'Srinivasa Ramanujan Institute of Technology (SRIT), Anantapur',
+    college: 'G. Pulla Reddy Engineering College (GPREC), Kurnool',
     domain: 'AI Integrated Full Stack Development',
     domainTag: 'Full Stack',
     company: 'Infosys',
@@ -50,7 +50,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 3,
     studentName: 'B. Dinesh Naidu',
-    college: 'Sri Krishnadevaraya University College of Engineering (SKUCE), Anantapur',
+    college: 'Rajeev Gandhi Memorial College of Engineering & Technology (RGMCET), Nandyal',
     domain: 'Embedded Systems & IoT',
     domainTag: 'Embedded IoT',
     company: 'Intel',
@@ -63,7 +63,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 4,
     studentName: 'P. Charan Kumar',
-    college: 'PVKK Institute of Technology (PVKKIT), Anantapur',
+    college: 'Madanapalle Institute of Technology & Science (MITS), Chittoor Dist',
     domain: 'AI Integrated Full Stack Development',
     domainTag: 'Full Stack',
     company: 'TCS Digital',
@@ -76,7 +76,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 5,
     studentName: 'S. Navya Sree',
-    college: 'Anantha Lakshmi Institute of Technology & Sciences (ALITS), Anantapur',
+    college: 'K.S.R.M. College of Engineering (KSRMCE), Kadapa',
     domain: 'Embedded Systems & IoT',
     domainTag: 'Embedded IoT',
     company: 'Microchip',
@@ -89,7 +89,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 6,
     studentName: 'V. Bhavani Prasad',
-    college: 'Gates Institute of Technology, Gooty, Anantapur Dist',
+    college: 'Sree Vidyanikethan Engineering College, Tirupati',
     domain: 'Embedded Systems & IoT',
     domainTag: 'Embedded IoT',
     company: 'AMD',
@@ -102,7 +102,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 7,
     studentName: 'G. Vamsi Krishna',
-    college: 'Chiranjeevi Reddy Institute of Engineering & Technology (CRIT), Anantapur',
+    college: 'YSR Engineering College of Yogi Vemana University, Proddatur, Kadapa Dist',
     domain: 'AI Integrated Full Stack Development',
     domainTag: 'Full Stack',
     company: 'Capgemini',
@@ -115,7 +115,7 @@ const ALUMNI_PLACEMENTS = [
   {
     id: 8,
     studentName: 'K. Manoj Kumar',
-    college: 'Intell Engineering College, Anantapur',
+    college: 'G. Pullaiah College of Engineering and Technology (GPCET), Kurnool',
     domain: 'Embedded Systems & IoT',
     domainTag: 'Embedded IoT',
     company: 'Bosch',
@@ -155,7 +155,7 @@ export default function PlacementTreeNetwork() {
           powers the industry.
         </h2>
         <p className="text-xs sm:text-sm text-lavender-700 mt-3 max-w-xl mx-auto leading-relaxed">
-          From intensive hands-on lab sprints to tier-1 technology leaders. Explore verified career placements from Telugu states and Anantapur district engineering institutes.
+          From intensive hands-on lab sprints to tier-1 technology leaders. Explore verified career placements from premier Rayalaseema region engineering institutes.
         </p>
       </div>
 
@@ -255,7 +255,7 @@ export default function PlacementTreeNetwork() {
               Recent Alumni Career Placements
             </h3>
             <p className="text-xs text-lavender-600 mt-0.5">
-              Verified selections across Anantapur engineering colleges & tier-1 recruiters.
+              Verified selections across premier Rayalaseema region engineering colleges & tier-1 recruiters.
             </p>
           </div>
 
@@ -317,7 +317,7 @@ export default function PlacementTreeNetwork() {
                   </div>
                 </div>
 
-                {/* Candidate Name & Anantapur College */}
+                {/* Candidate Name & Rayalaseema College */}
                 <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
                   {alum.studentName}
                 </h4>
