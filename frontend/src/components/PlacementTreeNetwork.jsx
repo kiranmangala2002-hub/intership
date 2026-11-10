@@ -194,16 +194,21 @@ export default function PlacementTreeNetwork() {
           {[...HIRING_PARTNERS_ROW_1, ...HIRING_PARTNERS_ROW_1, ...HIRING_PARTNERS_ROW_1].map((comp, idx) => (
             <div
               key={`r1-${idx}`}
-              className="w-52 sm:w-60 h-20 sm:h-22 p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-lavender-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(124,58,237,0.14)] hover:border-purple-300 transition-all flex-shrink-0"
+              className="w-56 sm:w-64 h-22 p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-lavender-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex items-center justify-between gap-4 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(124,58,237,0.14)] hover:border-purple-300 transition-all flex-shrink-0"
             >
-              <div className="h-9 w-24 flex items-center justify-center">
-                <img src={comp.logo} alt={comp.name} className="max-h-8 max-w-full object-contain" />
+              <div className="h-10 w-28 sm:w-32 flex items-center justify-start">
+                <img
+                  src={comp.logo}
+                  alt={comp.name}
+                  className="h-8 sm:h-9 max-w-full object-contain filter drop-shadow-2xs transition-transform group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
               <div className="text-right">
                 <span className="text-[10px] font-bold text-lavender-500 block truncate max-w-[110px]">
                   {comp.industry}
                 </span>
-                <span className="text-[11px] font-black text-emerald-600 block">
+                <span className="text-[12px] font-black text-emerald-600 block">
                   {comp.ctc}
                 </span>
               </div>
@@ -216,16 +221,21 @@ export default function PlacementTreeNetwork() {
           {[...HIRING_PARTNERS_ROW_2, ...HIRING_PARTNERS_ROW_2, ...HIRING_PARTNERS_ROW_2].map((comp, idx) => (
             <div
               key={`r2-${idx}`}
-              className="w-52 sm:w-60 h-20 sm:h-22 p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-lavender-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(124,58,237,0.14)] hover:border-purple-300 transition-all flex-shrink-0"
+              className="w-56 sm:w-64 h-22 p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-lavender-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex items-center justify-between gap-4 hover:-translate-y-1 hover:shadow-[0_10px_25px_rgba(124,58,237,0.14)] hover:border-purple-300 transition-all flex-shrink-0"
             >
-              <div className="h-9 w-24 flex items-center justify-center">
-                <img src={comp.logo} alt={comp.name} className="max-h-8 max-w-full object-contain" />
+              <div className="h-10 w-28 sm:w-32 flex items-center justify-start">
+                <img
+                  src={comp.logo}
+                  alt={comp.name}
+                  className="h-8 sm:h-9 max-w-full object-contain filter drop-shadow-2xs transition-transform group-hover:scale-105"
+                  loading="lazy"
+                />
               </div>
               <div className="text-right">
                 <span className="text-[10px] font-bold text-lavender-500 block truncate max-w-[110px]">
                   {comp.industry}
                 </span>
-                <span className="text-[11px] font-black text-emerald-600 block">
+                <span className="text-[12px] font-black text-emerald-600 block">
                   {comp.ctc}
                 </span>
               </div>
@@ -297,11 +307,12 @@ export default function PlacementTreeNetwork() {
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-2xs flex-shrink-0 group-hover:scale-105 transition-transform">
                     {alum.initial}
                   </div>
-                  <div className="h-8 max-w-[90px] flex items-center justify-end">
+                  <div className="h-10 px-3 py-1 rounded-xl bg-white border border-lavender-200/90 shadow-2xs flex items-center justify-center max-w-[125px]">
                     <img
                       src={alum.companyLogo}
                       alt={alum.company}
-                      className="max-h-7 max-w-full object-contain filter group-hover:scale-105 transition-transform"
+                      className="h-7 max-w-full object-contain filter group-hover:scale-105 transition-transform"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -314,11 +325,13 @@ export default function PlacementTreeNetwork() {
                   {alum.college}
                 </p>
 
-                {/* Role Offered */}
+                {/* Role Offered & Company */}
                 <div className="mt-3">
-                  <span className="text-[11px] font-bold text-lavender-800 block">
-                    {alum.role}
-                  </span>
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-lavender-900">
+                    <span className="text-purple-700 font-extrabold">{alum.company}</span>
+                    <span className="text-lavender-300">•</span>
+                    <span className="text-lavender-700 truncate">{alum.role}</span>
+                  </div>
                   <span className="text-[10px] font-semibold text-purple-600 block mt-0.5">
                     {alum.batch}
                   </span>
