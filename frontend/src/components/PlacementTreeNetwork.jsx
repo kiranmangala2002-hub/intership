@@ -162,21 +162,15 @@ export default function PlacementTreeNetwork() {
       {/* ========================================================= */}
       {/* 2. EXECUTIVE METRICS BAR                                  */}
       {/* ========================================================= */}
-      <div className="max-w-5xl mx-auto px-4 mb-12">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-3xl bg-white/90 backdrop-blur-xl border border-lavender-200 shadow-[0_8px_30px_rgba(124,58,237,0.06)]">
-          <div className="p-3 text-center border-r border-lavender-100 last:border-r-0">
-            <span className="text-2xl sm:text-3xl font-black text-purple-700 block">3,000+</span>
-            <span className="text-[10px] sm:text-[11px] font-bold text-lavender-600 uppercase tracking-wider">
-              Graduates Placed
-            </span>
-          </div>
-          <div className="p-3 text-center border-r border-lavender-100 last:border-r-0">
+      <div className="max-w-4xl mx-auto px-4 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 p-4 sm:p-5 rounded-3xl bg-white/90 backdrop-blur-xl border border-lavender-200 shadow-[0_8px_30px_rgba(124,58,237,0.06)]">
+          <div className="p-3 text-center border-b sm:border-b-0 sm:border-r border-lavender-100">
             <span className="text-2xl sm:text-3xl font-black text-indigo-700 block">40+</span>
             <span className="text-[10px] sm:text-[11px] font-bold text-lavender-600 uppercase tracking-wider">
               Hiring Partners
             </span>
           </div>
-          <div className="p-3 text-center border-r border-lavender-100 last:border-r-0">
+          <div className="p-3 text-center border-b sm:border-b-0 sm:border-r border-lavender-100">
             <span className="text-2xl sm:text-3xl font-black text-emerald-600 block">₹9.8 LPA</span>
             <span className="text-[10px] sm:text-[11px] font-bold text-lavender-600 uppercase tracking-wider">
               Top CTC Package
