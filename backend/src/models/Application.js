@@ -66,36 +66,43 @@ try {
   MongoApplication = mongoose.models.Application;
 }
 
-// Cohort Baseline Constants
-const BASELINE_TOTAL = 1420;
-const BASELINE_SHORTLISTED = 340;
-const BASELINE_UNDER_REVIEW = 812;
-const BASELINE_SUBMITTED = 268;
-const BASELINE_AI_FULLSTACK = 724;
-const BASELINE_EMBEDDED_IOT = 696;
+// Cohort Baseline Constants: Set to 0 for minimum, genuine count of stored applications
+const BASELINE_TOTAL = 0;
+const BASELINE_SHORTLISTED = 0;
+const BASELINE_UNDER_REVIEW = 0;
+const BASELINE_SUBMITTED = 0;
+const BASELINE_AI_FULLSTACK = 0;
+const BASELINE_EMBEDDED_IOT = 0;
 
 // Unified Application Operations (Dual-engine: Mongo + File Persistence)
 export const ApplicationModel = {
   async find(filter = {}) {
     if (isMongoConnected()) {
-      const query = {};
-      if (filter.status && filter.status !== 'All') {
-        query.status = filter.status;
+      try {
+        const query = {};
+        if (filter.status && filter.status !== 'All') {
+          query.status = filter.status;
+        }
+        if (filter.domain && filter.domain !== 'All') {
+          query.domain = filter.domain;
+        }
+        if (filter.search && filter.search.trim()) {
+          const regex = new RegExp(filter.search.trim(), 'i');
+          query.$or = [
+            { name: regex },
+            { email: regex },
+            { collegeName: regex },
+            { applicationId: regex },
+            { domain: regex },
+          ];
+        }
+        const mongoApps = await MongoApplication.find(query).sort({ createdAt: -1 });
+        if (mongoApps && mongoApps.length > 0) {
+          return mongoApps;
+        }
+      } catch (err) {
+        console.warn('⚠️ MongoDB query error, using local file store:', err.message);
       }
-      if (filter.domain && filter.domain !== 'All') {
-        query.domain = filter.domain;
-      }
-      if (filter.search && filter.search.trim()) {
-        const regex = new RegExp(filter.search.trim(), 'i');
-        query.$or = [
-          { name: regex },
-          { email: regex },
-          { collegeName: regex },
-          { applicationId: regex },
-          { domain: regex },
-        ];
-      }
-      return await MongoApplication.find(query).sort({ createdAt: -1 });
     }
 
     let apps = applicationStore.read();
@@ -120,7 +127,18 @@ export const ApplicationModel = {
 
   async findById(id) {
     if (isMongoConnected()) {
-      return await MongoApplication.findById(id);
+      try {
+        const mongoDoc = await MongoApplication.findById(id);
+        if (mongoDoc) return mongoDoc;
+      } catch (e) {
+        // ID might not be a valid Mongo ObjectId, continue to search
+      }
+      try {
+        const byCustom = await MongoApplication.findOne({
+          $or: [{ applicationId: id }, { email: id }],
+        });
+        if (byCustom) return byCustom;
+      } catch (e) {}
     }
     const apps = applicationStore.read();
     return apps.find((a) => a._id === id || a.id === id || a.applicationId === id) || null;
@@ -130,24 +148,16 @@ export const ApplicationModel = {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const applicationId = `SPH-2026-${randomSuffix}`;
 
-    if (isMongoConnected()) {
-      return await MongoApplication.create({
-        ...data,
-        applicationId,
-      });
-    }
-
-    const apps = applicationStore.read();
-    const newApp = {
+    const newAppRecord = {
       _id: 'app-' + Date.now(),
       id: 'app-' + Date.now(),
       applicationId,
-      name: data.name.trim(),
-      contact: data.contact.trim(),
-      collegeName: data.collegeName.trim(),
-      passoutYear: data.passoutYear,
-      email: data.email.toLowerCase().trim(),
-      domain: data.domain,
+      name: data.name ? data.name.trim() : '',
+      contact: data.contact ? data.contact.trim() : '',
+      collegeName: data.collegeName ? data.collegeName.trim() : '',
+      passoutYear: String(data.passoutYear || '2026'),
+      email: data.email ? data.email.toLowerCase().trim() : '',
+      domain: data.domain || 'AI Integrated Full Stack Development',
       resumeName: data.resumeName || 'Resume.pdf',
       photoUrl: data.photoUrl || '',
       status: data.status || 'Submitted',
@@ -155,49 +165,101 @@ export const ApplicationModel = {
       updatedAt: new Date().toISOString(),
     };
 
-    apps.unshift(newApp);
-    applicationStore.write(apps);
-    return newApp;
+    // 1. ALWAYS persist to local file store (backend/data/applications.json)
+    try {
+      const apps = applicationStore.read();
+      apps.unshift(newAppRecord);
+      applicationStore.write(apps);
+    } catch (err) {
+      console.error('File store write error:', err.message);
+    }
+
+    // 2. Persist to MongoDB Atlas if connected
+    if (isMongoConnected()) {
+      try {
+        const mongoDoc = await MongoApplication.create({
+          applicationId,
+          name: newAppRecord.name,
+          contact: newAppRecord.contact,
+          collegeName: newAppRecord.collegeName,
+          passoutYear: newAppRecord.passoutYear,
+          email: newAppRecord.email,
+          domain: newAppRecord.domain,
+          resumeName: newAppRecord.resumeName,
+          photoUrl: newAppRecord.photoUrl,
+          status: newAppRecord.status,
+        });
+        return mongoDoc;
+      } catch (mongoErr) {
+        console.error('MongoDB insert error (safely retained in JSON store):', mongoErr.message);
+      }
+    }
+
+    return newAppRecord;
   },
 
   async deleteById(id) {
+    let mongoDeleted = null;
     if (isMongoConnected()) {
-      return await MongoApplication.findByIdAndDelete(id);
+      try {
+        mongoDeleted = await MongoApplication.findByIdAndDelete(id);
+      } catch (e) {
+        // Try deleting by custom applicationId
+        mongoDeleted = await MongoApplication.findOneAndDelete({ applicationId: id });
+      }
     }
 
     const apps = applicationStore.read();
-    const index = apps.findIndex((a) => a._id === id || a.id === id);
-    if (index === -1) return null;
+    const index = apps.findIndex((a) => a._id === id || a.id === id || a.applicationId === id);
+    if (index !== -1) {
+      const [deleted] = apps.splice(index, 1);
+      applicationStore.write(apps);
+      return mongoDeleted || deleted;
+    }
 
-    const [deleted] = apps.splice(index, 1);
-    applicationStore.write(apps);
-    return deleted;
+    return mongoDeleted;
   },
 
   async updateStatus(id, newStatus) {
+    let mongoUpdated = null;
     if (isMongoConnected()) {
-      return await MongoApplication.findByIdAndUpdate(
-        id,
-        { status: newStatus },
-        { new: true }
-      );
+      try {
+        mongoUpdated = await MongoApplication.findByIdAndUpdate(
+          id,
+          { status: newStatus },
+          { new: true }
+        );
+      } catch (e) {
+        mongoUpdated = await MongoApplication.findOneAndUpdate(
+          { applicationId: id },
+          { status: newStatus },
+          { new: true }
+        );
+      }
     }
 
     const apps = applicationStore.read();
-    const app = apps.find((a) => a._id === id || a.id === id);
-    if (!app) return null;
+    const app = apps.find((a) => a._id === id || a.id === id || a.applicationId === id);
+    if (app) {
+      app.status = newStatus;
+      app.updatedAt = new Date().toISOString();
+      applicationStore.write(apps);
+      return mongoUpdated || app;
+    }
 
-    app.status = newStatus;
-    app.updatedAt = new Date().toISOString();
-    applicationStore.write(apps);
-    return app;
+    return mongoUpdated;
   },
 
   async getMetrics() {
     let liveApps = [];
     if (isMongoConnected()) {
-      liveApps = await MongoApplication.find();
-    } else {
+      try {
+        liveApps = await MongoApplication.find();
+      } catch (e) {
+        liveApps = [];
+      }
+    }
+    if (!liveApps || liveApps.length === 0) {
       liveApps = applicationStore.read();
     }
 
@@ -221,6 +283,9 @@ export const ApplicationModel = {
     const aiFullStackCount = BASELINE_AI_FULLSTACK + liveAiFullStack;
     const embeddedIotCount = BASELINE_EMBEDDED_IOT + liveEmbeddedIot;
 
+    const aiPercentage = totalCount > 0 ? ((aiFullStackCount / totalCount) * 100).toFixed(1) : '0.0';
+    const embeddedPercentage = totalCount > 0 ? ((embeddedIotCount / totalCount) * 100).toFixed(1) : '0.0';
+
     return {
       totals: {
         all: totalCount,
@@ -233,13 +298,13 @@ export const ApplicationModel = {
         aiIntegratedFullStack: {
           name: 'AI Integrated Full Stack Development',
           count: aiFullStackCount,
-          percentage: ((aiFullStackCount / totalCount) * 100).toFixed(1),
+          percentage: aiPercentage,
           stipend: '₹10,000 - ₹15,000/mo (Performance Based)',
         },
         embeddedSystemsIot: {
           name: 'Embedded Systems & IoT',
           count: embeddedIotCount,
-          percentage: ((embeddedIotCount / totalCount) * 100).toFixed(1),
+          percentage: embeddedPercentage,
           stipend: '₹10,000 - ₹15,000/mo (Performance Based)',
         },
       },
@@ -252,12 +317,12 @@ export const ApplicationModel = {
         {
           stage: 'Under Technical Evaluation',
           count: underReviewCount,
-          percent: parseFloat(((underReviewCount / totalCount) * 100).toFixed(1)),
+          percent: totalCount > 0 ? parseFloat(((underReviewCount / totalCount) * 100).toFixed(1)) : 0,
         },
         {
           stage: 'Shortlisted for Interview',
           count: shortlistedCount,
-          percent: parseFloat(((shortlistedCount / totalCount) * 100).toFixed(1)),
+          percent: totalCount > 0 ? parseFloat(((shortlistedCount / totalCount) * 100).toFixed(1)) : 0,
         },
       ],
       lastUpdated: new Date().toISOString(),

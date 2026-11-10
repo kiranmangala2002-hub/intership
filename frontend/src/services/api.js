@@ -37,12 +37,21 @@ export const getDomains = async () => {
 
 // Student Internship Applications API
 export const getApplications = async (params = {}) => {
-  const response = await api.get('/applications', { params });
+  const response = await api.get('/applications', {
+    params: {
+      ...params,
+      _t: Date.now(),
+    },
+  });
   return response.data;
 };
 
 export const getApplicationStats = async () => {
-  const response = await api.get('/applications/stats');
+  const response = await api.get('/applications/stats', {
+    params: {
+      _t: Date.now(),
+    },
+  });
   return response.data;
 };
 

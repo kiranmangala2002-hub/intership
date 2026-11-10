@@ -27,6 +27,33 @@ export default function ApplicationsPage({
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupError, setLookupError] = useState('');
 
+  // Live Sync / Refresh Feedback State
+  const [refreshMessage, setRefreshMessage] = useState('');
+  const [localRefreshing, setLocalRefreshing] = useState(false);
+
+  // Manual Trigger for Live Sync with Backend
+  const handleManualRefresh = async () => {
+    setLocalRefreshing(true);
+    setRefreshMessage('');
+    try {
+      if (onRefresh) {
+        const res = await onRefresh();
+        if (res && res.success) {
+          setRefreshMessage(`Synced ${res.count} application${res.count === 1 ? '' : 's'} with live database`);
+        } else {
+          setRefreshMessage('Synced with live database');
+        }
+      }
+    } catch (err) {
+      setRefreshMessage('Failed to sync. Check backend server.');
+    } finally {
+      setLocalRefreshing(false);
+      setTimeout(() => {
+        setRefreshMessage('');
+      }, 4000);
+    }
+  };
+
   // Handle Self-Service Lookup
   const handleLookup = async (e) => {
     e.preventDefault();
@@ -46,11 +73,11 @@ export default function ApplicationsPage({
     }
   };
 
-  // Baseline metrics matching SPHERONIX database
-  const baselineAll = 1420;
-  const baselineShortlisted = 340;
-  const baselineUnderReview = 812;
-  const baselineSubmitted = 268;
+  // Minimum authentic live counts matching actual applications in backend database
+  const baselineAll = 0;
+  const baselineShortlisted = 0;
+  const baselineUnderReview = 0;
+  const baselineSubmitted = 0;
 
   const liveShortlisted = applications.filter((a) => a.status === 'Shortlisted').length;
   const liveUnderReview = applications.filter((a) => a.status === 'Under Review').length;
@@ -65,10 +92,13 @@ export default function ApplicationsPage({
   const aiDomain = stats?.domains?.aiIntegratedFullStack;
   const iotDomain = stats?.domains?.embeddedSystemsIot;
 
-  const countAiFullStack = aiDomain?.count ?? Math.round(countAll * 0.51);
-  const countEmbeddedIot = iotDomain?.count ?? Math.round(countAll * 0.49);
-  const pctAiFullStack = aiDomain?.percentage ?? ((countAiFullStack / countAll) * 100).toFixed(1);
-  const pctEmbeddedIot = iotDomain?.percentage ?? ((countEmbeddedIot / countAll) * 100).toFixed(1);
+  const liveAiCount = applications.filter((a) => a.domain && a.domain.toLowerCase().includes('full stack')).length;
+  const liveIotCount = applications.filter((a) => a.domain && a.domain.toLowerCase().includes('embedded')).length;
+
+  const countAiFullStack = aiDomain?.count ?? liveAiCount;
+  const countEmbeddedIot = iotDomain?.count ?? liveIotCount;
+  const pctAiFullStack = aiDomain?.percentage ?? (countAll > 0 ? ((countAiFullStack / countAll) * 100).toFixed(1) : '0.0');
+  const pctEmbeddedIot = iotDomain?.percentage ?? (countAll > 0 ? ((countEmbeddedIot / countAll) * 100).toFixed(1) : '0.0');
 
   // Filtered live applications list
   const filteredApplications = useMemo(() => {
@@ -155,21 +185,30 @@ export default function ApplicationsPage({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-          <button
-            onClick={onRefresh}
-            disabled={isRefreshing}
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold bg-white text-lavender-800 border border-lavender-200 shadow-2xs hover:bg-lavender-50 transition-all disabled:opacity-50"
-          >
-            <span className={isRefreshing ? 'animate-spin' : ''}>🔄</span>
-            <span>{isRefreshing ? 'Syncing...' : 'Sync Live'}</span>
-          </button>
-          <button
-            onClick={onOpenRegister}
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_22px_rgba(124,58,237,0.55)] hover:scale-102 active:scale-95 transition-all whitespace-nowrap"
-          >
-            <span>➕ New Application</span>
-          </button>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+          {refreshMessage && (
+            <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/90 px-3 py-2 rounded-2xl border border-emerald-300 animate-fadeIn flex items-center justify-center gap-1.5 shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+              {refreshMessage}
+            </span>
+          )}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={handleManualRefresh}
+              disabled={isRefreshing || localRefreshing}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold bg-white text-lavender-800 border border-lavender-200 shadow-2xs hover:bg-lavender-50 hover:border-purple-300 transition-all disabled:opacity-50 active:scale-95 cursor-pointer"
+              title="Sync latest live applications and metrics directly from backend"
+            >
+              <span className={(isRefreshing || localRefreshing) ? 'animate-spin' : ''}>🔄</span>
+              <span>{(isRefreshing || localRefreshing) ? 'Syncing...' : 'Sync Live'}</span>
+            </button>
+            <button
+              onClick={onOpenRegister}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_22px_rgba(124,58,237,0.55)] hover:scale-102 active:scale-95 transition-all whitespace-nowrap cursor-pointer"
+            >
+              <span>➕ New Application</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -219,7 +258,7 @@ export default function ApplicationsPage({
             {countShortlisted.toLocaleString()}
           </span>
           <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            {((countShortlisted / countAll) * 100).toFixed(1)}% Qualified
+            {countAll > 0 ? `${((countShortlisted / countAll) * 100).toFixed(1)}% Qualified` : '0% Qualified'}
           </span>
         </div>
 
@@ -242,7 +281,7 @@ export default function ApplicationsPage({
             {countUnderReview.toLocaleString()}
           </span>
           <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            {((countUnderReview / countAll) * 100).toFixed(1)}% In Screening
+            {countAll > 0 ? `${((countUnderReview / countAll) * 100).toFixed(1)}% In Screening` : '0% In Screening'}
           </span>
         </div>
 
@@ -265,7 +304,7 @@ export default function ApplicationsPage({
             {countSubmitted.toLocaleString()}
           </span>
           <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            {((countSubmitted / countAll) * 100).toFixed(1)}% In Queue
+            {countAll > 0 ? `${((countSubmitted / countAll) * 100).toFixed(1)}% In Queue` : '0% In Queue'}
           </span>
         </div>
       </div>
@@ -818,19 +857,19 @@ export default function ApplicationsPage({
                 {
                   label: '2. In Active Technical Evaluation',
                   count: countUnderReview,
-                  pct: ((countUnderReview / countAll) * 100).toFixed(1),
+                  pct: countAll > 0 ? ((countUnderReview / countAll) * 100).toFixed(1) : '0.0',
                   color: 'bg-amber-400',
                 },
                 {
                   label: '3. Shortlisted for Technical Interviews',
                   count: countShortlisted,
-                  pct: ((countShortlisted / countAll) * 100).toFixed(1),
+                  pct: countAll > 0 ? ((countShortlisted / countAll) * 100).toFixed(1) : '0.0',
                   color: 'bg-emerald-500',
                 },
                 {
                   label: '4. Newly Received / In Queue',
                   count: countSubmitted,
-                  pct: ((countSubmitted / countAll) * 100).toFixed(1),
+                  pct: countAll > 0 ? ((countSubmitted / countAll) * 100).toFixed(1) : '0.0',
                   color: 'bg-sky-500',
                 },
               ].map((stage, idx) => (

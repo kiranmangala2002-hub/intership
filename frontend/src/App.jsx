@@ -146,14 +146,18 @@ export default function App() {
         getApplicationStats(),
       ]);
 
+      let loadedCount = applications.length;
       if (appsRes.status === 'fulfilled' && appsRes.value?.success) {
         setApplications(appsRes.value.data);
+        loadedCount = appsRes.value.data.length;
       }
       if (statsRes.status === 'fulfilled' && statsRes.value?.success) {
         setApplicationStats(statsRes.value.data);
       }
+      return { success: true, count: loadedCount, timestamp: Date.now() };
     } catch (err) {
       console.log('Error fetching applications & stats:', err.message);
+      return { success: false, error: err.message };
     } finally {
       setIsRefreshing(false);
     }
