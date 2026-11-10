@@ -34,7 +34,7 @@ export async function syncApplicationsToMongo() {
   }
 
   const rawData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  console.log(`Synchronizing ${rawData.length} Telugu student applications with Anantapur district colleges to MongoDB...`);
+  console.log(`Synchronizing ${rawData.length} Telugu student applications with Rayalaseema region colleges to MongoDB...`);
 
   // Remove any legacy placeholder records from MongoDB that do not match the valid IDs
   const validIds = rawData.map((d) => d.applicationId);

@@ -11,7 +11,7 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Initial seed data for Applications (Telugu States & Anantapur District Colleges)
+// Initial seed data for Applications (Rayalaseema Region Colleges)
 const SEED_APPLICATIONS = [
   {
     _id: 'app-seed-001',
@@ -19,11 +19,11 @@ const SEED_APPLICATIONS = [
     applicationId: 'SPH-2026-8841',
     name: 'P. Charan Kumar',
     contact: '+91 9876543210',
-    collegeName: 'PVKK Institute of Technology (PVKKIT), Anantapur',
+    collegeName: 'Madanapalle Institute of Technology & Science (MITS), Chittoor Dist',
     passoutYear: '2025',
     email: 'charan.kumar@example.com',
     domain: 'AI Integrated Full Stack Development',
-    resumeName: 'Charan_Kumar_PVKK_Resume.pdf',
+    resumeName: 'Charan_Kumar_MITS_Resume.pdf',
     photoUrl: '',
     status: 'Shortlisted',
     createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
@@ -35,11 +35,11 @@ const SEED_APPLICATIONS = [
     applicationId: 'SPH-2026-9214',
     name: 'S. Navya Sree',
     contact: '+91 9811223344',
-    collegeName: 'Anantha Lakshmi Institute of Technology & Sciences (ALITS), Anantapur',
+    collegeName: 'K.S.R.M. College of Engineering (KSRMCE), Kadapa',
     passoutYear: '2026',
     email: 'navya.sree@example.com',
     domain: 'Embedded Systems & IoT',
-    resumeName: 'Navya_Sree_ALITS_IoT_CV.pdf',
+    resumeName: 'Navya_Sree_KSRM_IoT_CV.pdf',
     photoUrl: '',
     status: 'Under Review',
     createdAt: new Date(Date.now() - 86400000).toISOString(),

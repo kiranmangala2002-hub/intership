@@ -18,8 +18,18 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(morgan('dev'));
 
-// Serve built frontend if dist exists
-app.use(express.static(frontendDist));
+// Serve built frontend if dist exists with aggressive no-cache on html to ensure users always get the latest bundle
+app.use(
+  express.static(frontendDist, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.html') || filePath.endsWith('.json')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      }
+    },
+  })
+);
 
 // API Routes
 app.use('/api', apiRoutes);
