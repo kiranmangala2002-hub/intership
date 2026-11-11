@@ -311,21 +311,24 @@ export default function App() {
         onClose={() => setIsWhatsAppModalOpen(false)}
       />
 
-      {/* Floating WhatsApp Quick-Connect Widget */}
+      {/* Floating 3D WhatsApp Quick-Connect Widget with Holographic Glow */}
       <button
         type="button"
         onClick={() => setIsWhatsAppModalOpen(true)}
         title="Chat with SPHERONIX Admissions on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#25D366] text-white shadow-[0_6px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_10px_35px_rgba(37,211,102,0.65)] hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-tr from-[#1ebe5d] via-[#25D366] to-[#4eed87] text-white shadow-[0_10px_35px_rgba(37,211,102,0.5),0_0_25px_rgba(37,211,102,0.3)] hover:shadow-[0_14px_45px_rgba(37,211,102,0.7),0_0_35px_rgba(37,211,102,0.5)] hover:-translate-y-1 hover:scale-105 active:translate-y-0.5 active:scale-95 transition-all duration-300 group cursor-pointer border border-emerald-300/40 ring-2 ring-emerald-400/20"
+        style={{
+          transformStyle: 'preserve-3d',
+        }}
       >
-        <span className="relative flex h-2.5 w-2.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-85"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-white shadow-xs"></span>
         </span>
-        <svg className="w-5 h-5 fill-white flex-shrink-0" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 fill-white flex-shrink-0 drop-shadow-sm group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24">
           <path d="M12.031 2c-5.508 0-9.984 4.477-9.984 9.984 0 1.761.458 3.481 1.33 5.002L2 22l5.163-1.354c1.464.799 3.111 1.22 4.868 1.22 5.508 0 9.984-4.477 9.984-9.984C22.015 6.477 17.539 2 12.031 2zm0 18.291c-1.503 0-2.977-.406-4.265-1.173l-.306-.182-3.167.831.846-3.087-.199-.317c-.841-1.341-1.286-2.903-1.286-4.512 0-4.573 3.721-8.294 8.294-8.294 4.573 0 8.294 3.721 8.294 8.294 0 4.573-3.721 8.294-8.294 8.294zm4.545-6.208c-.249-.125-1.474-.727-1.702-.81-.229-.083-.395-.125-.562.125-.166.249-.645.81-.79 1-.146.187-.291.208-.541.083-.249-.125-1.054-.388-2.008-1.238-.742-.662-1.243-1.48-1.389-1.729-.146-.249-.016-.384.109-.508.112-.112.249-.291.374-.437.125-.146.166-.249.249-.416.083-.166.042-.312-.021-.437-.062-.125-.562-1.353-.77-1.853-.203-.487-.41-.421-.562-.429-.146-.008-.312-.01-.479-.01-.166 0-.437.062-.666.312-.229.249-.874.854-.874 2.083 0 1.229.895 2.416 1.02 2.583.125.166 1.761 2.689 4.267 3.771.596.257 1.061.411 1.424.527.599.191 1.144.164 1.575.1 4.8-.072 1.474-.604 1.682-1.187.208-.583.208-1.083.146-1.187-.062-.104-.229-.166-.479-.291z"/>
         </svg>
-        <span className="text-xs font-bold hidden sm:inline tracking-tight">Chat on WhatsApp</span>
+        <span className="text-xs font-black hidden sm:inline tracking-tight text-white drop-shadow-xs">Chat on WhatsApp</span>
       </button>
 
       <Footer />

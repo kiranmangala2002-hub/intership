@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { submitApplication, loginStudent } from '../services/api';
+import Button3D from './common3d/Button3D';
+import Badge3D from './common3d/Badge3D';
 
 const DOMAIN_OPTIONS = [
   'AI Integrated Full Stack Development',
@@ -148,16 +150,19 @@ export default function StudentAuthModal({
 
   return (
     <div
-      className="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[120] flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[120] flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-xl bg-white/95 backdrop-blur-xl border border-lavender-200/90 rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[92vh] overflow-y-auto my-auto"
+        className="relative w-full max-w-xl bg-white/95 backdrop-blur-2xl border border-lavender-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_25px_80px_rgba(124,58,237,0.35)] max-h-[92vh] overflow-y-auto my-auto animate-cool-page"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Top Holographic Laser Accent */}
+        <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-purple-600 via-cyan-400 to-indigo-600 shadow-[0_0_12px_#38bdf8]" />
+
         {/* Modal Close Button */}
         <button
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-lavender-100 hover:bg-lavender-200 text-lavender-700 flex items-center justify-center font-bold text-sm transition-colors"
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-lavender-100 hover:bg-lavender-200 text-lavender-700 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
           onClick={() => {
             setSubmittedRecord(null);
             onClose();
@@ -183,13 +188,11 @@ export default function StudentAuthModal({
         {/* ========================================================= */}
         {submittedRecord ? (
           <div className="space-y-5 animate-cool-page">
-            <div className="text-center p-5 rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-purple-50/50 border border-emerald-200 shadow-sm">
-              <span className="w-12 h-12 mx-auto mb-2 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-sm">
+            <div className="text-center p-5 rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-purple-50/50 border border-emerald-300 shadow-[0_8px_30px_rgba(16,185,129,0.2)]">
+              <span className="w-12 h-12 mx-auto mb-2 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center text-2xl shadow-md ring-2 ring-emerald-200">
                 ✓
               </span>
-              <span className="text-xs font-black uppercase text-emerald-800 bg-emerald-100 px-3 py-0.5 rounded-full">
-                Application Received & Logged
-              </span>
+              <Badge3D variant="cyan" pulse={true} label="Application Received & Logged" />
               <h2 className="text-xl sm:text-2xl font-black text-lavender-950 mt-2">
                 Congratulations, {submittedRecord.name}!
               </h2>
@@ -198,7 +201,7 @@ export default function StudentAuthModal({
               </p>
 
               {/* Application ID Card */}
-              <div className="mt-4 p-3.5 rounded-2xl bg-white border border-purple-200 flex items-center justify-between gap-3 shadow-2xs">
+              <div className="mt-4 p-3.5 rounded-2xl bg-white border border-purple-200 flex items-center justify-between gap-3 shadow-sm">
                 <div className="text-left">
                   <span className="text-[10px] font-bold text-lavender-500 uppercase block">
                     Your Official Application ID
@@ -207,18 +210,20 @@ export default function StudentAuthModal({
                     {submittedRecord.applicationId}
                   </span>
                 </div>
-                <button
+                <Button3D
                   type="button"
                   onClick={copyDetailsToClipboard}
-                  className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-lavender-100 hover:bg-lavender-200 text-purple-900 border border-lavender-200 transition-all flex items-center gap-1.5"
+                  variant="secondary"
+                  size="sm"
+                  className="cursor-pointer"
                 >
                   <span>{copiedId ? '✓ Copied!' : '📋 Copy ID'}</span>
-                </button>
+                </Button3D>
               </div>
             </div>
 
             {/* Applicant Detailed Dossier */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-lavender-50/70 border border-lavender-200 text-xs space-y-2">
+            <div className="p-4 sm:p-5 rounded-2xl bg-lavender-50/80 border border-lavender-200 text-xs space-y-2 shadow-2xs">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-700 block mb-2">
                 Submitted Student Profile Summary
               </span>
@@ -257,7 +262,7 @@ export default function StudentAuthModal({
             </div>
 
             {/* What Happens Next Roadmap */}
-            <div className="p-4 rounded-2xl bg-white border border-lavender-200 text-xs space-y-2">
+            <div className="p-4 rounded-2xl bg-white border border-lavender-200 text-xs space-y-2 shadow-2xs">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-700 block">
                 Next Steps for Your Cohort
               </span>
@@ -279,39 +284,43 @@ export default function StudentAuthModal({
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-2.5 pt-2">
-              <button
+              <Button3D
                 type="button"
                 onClick={() => {
                   setSubmittedRecord(null);
                   onClose();
                   window.location.hash = 'applications';
                 }}
-                className="w-full sm:flex-1 py-3 px-4 rounded-2xl text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md hover:scale-102 active:scale-95 transition-all text-center"
+                variant="primary"
+                size="md"
+                className="w-full sm:flex-1 cursor-pointer justify-center"
               >
                 🔍 Track Live in Applications Portal →
-              </button>
-              <button
+              </Button3D>
+              <Button3D
                 type="button"
                 onClick={() => {
                   setSubmittedRecord(null);
                   onClose();
                 }}
-                className="w-full sm:w-auto py-3 px-6 rounded-2xl text-xs font-bold text-lavender-700 bg-lavender-100 hover:bg-lavender-200 transition-colors"
+                variant="ghost"
+                size="md"
+                className="w-full sm:w-auto cursor-pointer justify-center"
               >
                 Close & Finish
-              </button>
+              </Button3D>
             </div>
           </div>
         ) : (
           /* REGULAR FORM (REGISTER OR SIGN IN) */
           <>
             {/* Tab Toggle */}
-            <div className="flex bg-lavender-100/80 p-1.5 rounded-2xl mb-6">
+            <div className="flex bg-lavender-100/90 p-1.5 rounded-2xl mb-6 shadow-inner">
               <button
                 type="button"
-                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${
+                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                   tab === 'register'
-                    ? 'bg-purple-600 text-white shadow-sm'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_4px_12px_rgba(124,58,237,0.35)] scale-102'
                     : 'text-lavender-700 hover:text-lavender-900'
                 }`}
                 onClick={() => {
@@ -324,9 +333,9 @@ export default function StudentAuthModal({
               </button>
               <button
                 type="button"
-                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${
+                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                   tab === 'signin'
-                    ? 'bg-purple-600 text-white shadow-sm'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_4px_12px_rgba(124,58,237,0.35)] scale-102'
                     : 'text-lavender-700 hover:text-lavender-900'
                 }`}
                 onClick={() => {
@@ -501,13 +510,15 @@ export default function StudentAuthModal({
                 </div>
 
                 {/* Submit */}
-                <button
+                <Button3D
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 mt-2 rounded-2xl text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_22px_rgba(124,58,237,0.55)] transition-all"
+                  variant="primary"
+                  size="lg"
+                  className="w-full mt-3 cursor-pointer justify-center"
                 >
                   {loading ? 'Submitting Application...' : '🚀 Submit Application for Internships & Training'}
-                </button>
+                </Button3D>
               </form>
             ) : (
               /* SIGN IN FORM */
@@ -531,7 +542,7 @@ export default function StudentAuthModal({
                     value={signInData.email}
                     onChange={(e) => setSignInData({ ...signInData, email: e.target.value })}
                     required
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-lavender-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-lavender-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-inner"
                   />
                 </div>
 
@@ -545,7 +556,7 @@ export default function StudentAuthModal({
                     value={signInData.password}
                     onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
                     required
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-lavender-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-lavender-950 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-inner"
                   />
                 </div>
 
@@ -559,13 +570,15 @@ export default function StudentAuthModal({
                   </a>
                 </div>
 
-                <button
+                <Button3D
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 rounded-2xl text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md hover:shadow-lg transition-all"
+                  variant="primary"
+                  size="lg"
+                  className="w-full cursor-pointer justify-center"
                 >
                   {loading ? 'Authenticating...' : 'Sign In to Student Portal'}
-                </button>
+                </Button3D>
 
                 <div className="p-3 rounded-xl bg-lavender-50 border border-lavender-200 text-xs text-lavender-700">
                   💡 <strong>Demo Login:</strong> Enter any student email (e.g. <code>student@college.edu</code>) and password.

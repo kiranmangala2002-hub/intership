@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FSD_PROGRAM_DATA, EMBEDDED_PROGRAM_DATA } from '../data/domainCurriculums';
+import Button3D from './common3d/Button3D';
+import Card3D from './common3d/Card3D';
+import Badge3D from './common3d/Badge3D';
+import { ArrowRight, X } from 'lucide-react';
 
 export default function DomainDetailModal({
   isOpen,
@@ -202,6 +206,44 @@ export default function DomainDetailModal({
                   </span>
                 </div>
               )}
+
+              {/* 6-Month Holographic Progression Timeline Track */}
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-lavender-50/80 border border-lavender-200/90 shadow-2xs">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-purple-700 flex items-center gap-1.5">
+                    <span>🗓️</span> 6-Month Holographic Learning Timeline
+                  </span>
+                  <span className="text-[10px] font-bold text-lavender-500">
+                    Click node to jump to monthly modules
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  {[
+                    { month: 'Month 1', label: 'Foundation & Core', mIdx: 0 },
+                    { month: 'Month 2', label: isFullStack ? 'Frontend & React' : 'Edge AI & ARM', mIdx: 2 },
+                    { month: 'Month 3', label: isFullStack ? 'Backend Microservices' : 'FreeRTOS & IoT', mIdx: isFullStack ? 4 : 3 },
+                    { month: 'Month 4', label: isFullStack ? 'AI Agents & Testing' : 'Linux Drivers LDD', mIdx: isFullStack ? 6 : 4 },
+                    { month: 'Month 5', label: 'Company Project', mIdx: isFullStack ? 8 : 7 },
+                    { month: 'Month 6', label: 'Deploy & Referrals', mIdx: isFullStack ? 8 : 9 },
+                  ].map((node, nIdx) => (
+                    <button
+                      key={nIdx}
+                      type="button"
+                      onClick={() => setSelectedModuleIdx(node.mIdx)}
+                      className={`p-2 rounded-xl text-center transition-all cursor-pointer ${
+                        selectedModuleIdx === node.mIdx
+                          ? isFullStack
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm scale-102 font-extrabold'
+                            : 'bg-gradient-to-r from-teal-700 to-emerald-700 text-white shadow-sm scale-102 font-extrabold'
+                          : 'bg-white text-lavender-800 hover:bg-lavender-100 border border-lavender-200/70 text-xs'
+                      }`}
+                    >
+                      <span className="block text-[11px] font-black">{node.month}</span>
+                      <span className="block text-[9px] truncate opacity-85 mt-0.5">{node.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               {/* Module Selector Pills */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
@@ -758,25 +800,24 @@ export default function DomainDetailModal({
           </div>
 
           <div className="flex items-center gap-2.5 w-full sm:w-auto">
-            <button
+            <Button3D
+              variant="secondary"
+              size="sm"
               onClick={onClose}
-              className="flex-1 sm:flex-none px-5 py-2.5 rounded-2xl text-xs font-bold text-lavender-700 bg-lavender-100 hover:bg-lavender-200 transition-colors"
             >
               Close
-            </button>
-            <button
+            </Button3D>
+            <Button3D
+              variant={isFullStack ? 'primary' : 'cyan'}
+              size="sm"
               onClick={() => {
                 onClose();
                 if (onApplyDomain) onApplyDomain(data.title);
               }}
-              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_8px_25px_rgba(124,58,237,0.55)] hover:scale-105 active:scale-95 transition-all text-center whitespace-nowrap ${
-                isFullStack
-                  ? 'bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600'
-                  : 'bg-gradient-to-r from-teal-600 via-indigo-600 to-purple-600'
-              }`}
+              icon={<ArrowRight className="w-4 h-4 text-white" />}
             >
-              Apply for {isFullStack ? 'Full Stack' : 'Embedded Systems & IoT'} Track →
-            </button>
+              Apply for {isFullStack ? 'Full Stack' : 'Embedded Systems & IoT'} Track
+            </Button3D>
           </div>
         </div>
       </div>

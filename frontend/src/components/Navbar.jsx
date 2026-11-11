@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Home, Layers, Compass, Sparkles, HelpCircle, ClipboardList } from 'lucide-react';
+import { Home, Layers, Compass, Sparkles, HelpCircle, ClipboardList, ArrowRight, X, Menu } from 'lucide-react';
+import Button3D from './common3d/Button3D';
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Home', icon: Home },
@@ -55,21 +56,24 @@ export default function Navbar({
   };
 
   return (
-    <header className="sticky top-2 sm:top-4 z-50 px-3 sm:px-6 max-w-6xl mx-auto w-full transition-all">
-      {/* Main Glassmorphic Capsule */}
-      <div className="relative flex items-center justify-between px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white/90 backdrop-blur-2xl border border-white/80 shadow-[0_10px_35px_rgba(124,58,237,0.08)]">
+    <header className="sticky top-2 sm:top-4 z-50 px-3 sm:px-6 max-w-6xl mx-auto w-full transition-all perspective-1000">
+      {/* Main Glassmorphic Capsule with 3D Depth */}
+      <div className="relative flex items-center justify-between px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white/85 backdrop-blur-2xl border border-white/90 shadow-[0_12px_40px_-8px_rgba(124,58,237,0.15)] transition-all hover:shadow-[0_16px_50px_-6px_rgba(124,58,237,0.22)]">
         
-        {/* Left Section: Company Brand Logo */}
+        {/* Left Section: 3D Holographic Company Brand Logo */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => handleNavClick('home')}
-            className="flex items-center group py-0.5 focus:outline-none transition-transform hover:scale-105 active:scale-95 duration-200"
+            className="relative flex items-center group py-0.5 focus:outline-none transition-transform hover:scale-105 active:scale-95 duration-300 preserve-3d"
+            title="SPHERONIX Technologies Home"
           >
-            <img
-              src="/logo.png"
-              alt="SPHERONIX Technologies Pvt. Ltd"
-              className="h-7 sm:h-9 md:h-10 w-auto object-contain mix-blend-multiply"
-            />
+            <div className="relative px-2 py-1 rounded-2xl bg-white/60 border border-lavender-200/60 shadow-2xs group-hover:border-purple-300/80 transition-colors">
+              <img
+                src="/logo.png"
+                alt="SPHERONIX Technologies Pvt. Ltd"
+                className="h-7 sm:h-9 md:h-10 w-auto object-contain mix-blend-multiply transition-transform group-hover:scale-102"
+              />
+            </div>
           </button>
         </div>
 
@@ -78,19 +82,19 @@ export default function Navbar({
           ref={navRef}
           className="relative hidden md:flex items-center gap-1 p-1 rounded-full bg-lavender-100/70 border border-lavender-200/60 shadow-inner"
         >
-          {/* Smooth, Simple, Slow Sliding Active Background Pill */}
+          {/* Smooth Sliding Active Background Pill */}
           <div
-            className="absolute top-1 bottom-1 rounded-full bg-white shadow-[0_4px_16px_rgba(124,58,237,0.15)] border border-lavender-200/90 pointer-events-none will-change-transform z-0"
+            className="absolute top-1 bottom-1 rounded-full bg-white shadow-[0_4px_18px_rgba(124,58,237,0.18)] border border-lavender-200/90 pointer-events-none will-change-transform z-0"
             style={{
               transform: `translateX(${sliderStyle.left}px)`,
               width: `${sliderStyle.width}px`,
               opacity: sliderStyle.opacity,
               transition:
-                'transform 650ms cubic-bezier(0.25, 1, 0.5, 1), width 550ms cubic-bezier(0.25, 1, 0.5, 1), opacity 300ms ease',
+                'transform 550ms cubic-bezier(0.22, 1, 0.36, 1), width 450ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease',
             }}
           >
             {/* Active glowing accent indicator bar at the bottom */}
-            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 shadow-[0_0_8px_rgba(124,58,237,0.7)]" />
+            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-gradient-to-r from-purple-600 via-cyan-500 to-indigo-600 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
           </div>
 
           {NAV_ITEMS.map((item) => {
@@ -108,7 +112,7 @@ export default function Navbar({
                 }`}
               >
                 <Icon
-                  className={`w-3.5 h-3.5 transition-all duration-500 ease-out ${
+                  className={`w-3.5 h-3.5 transition-all duration-400 ease-out ${
                     isActive
                       ? 'text-purple-600 scale-110 drop-shadow-[0_2px_4px_rgba(124,58,237,0.35)]'
                       : 'text-lavender-500 group-hover:text-purple-600 group-hover:scale-110'
@@ -120,7 +124,7 @@ export default function Navbar({
           })}
         </nav>
 
-        {/* Right Section: Sign In & Shimmer Apply Button */}
+        {/* Right Section: Sign In & 3D Tactile Apply Button */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Desktop Auth / User Session */}
           <div className="hidden sm:flex items-center gap-2">
@@ -144,18 +148,14 @@ export default function Navbar({
                 >
                   Sign In
                 </button>
-                <button
+                <Button3D
                   onClick={onOpenRegister}
-                  className="relative overflow-hidden text-xs font-extrabold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 text-white shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_25px_rgba(124,58,237,0.55)] hover:scale-105 active:scale-95 transition-all duration-200 group"
+                  variant="primary"
+                  size="sm"
+                  icon={<ArrowRight className="w-3.5 h-3.5" />}
                 >
-                  <span
-                    className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none"
-                    style={{ animation: 'navShimmer 4s ease-in-out infinite' }}
-                  />
-                  <span className="relative flex items-center gap-1">
-                    Apply Now <span>→</span>
-                  </span>
-                </button>
+                  Apply Now
+                </Button3D>
               </div>
             )}
           </div>
@@ -167,24 +167,17 @@ export default function Navbar({
             aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? (
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              <X className="w-4 h-4 text-purple-950" />
             ) : (
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
+              <Menu className="w-4 h-4 text-purple-950" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Dropdown Drawer (Smooth, Responsive & Touch-friendly) */}
+      {/* Mobile Dropdown Drawer with Layered 3D Glass */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-2 p-4 rounded-3xl bg-white/95 backdrop-blur-2xl border border-lavender-200/90 shadow-[0_15px_35px_rgba(124,58,237,0.15)] animate-cool-page">
+        <div className="md:hidden mt-2 p-4 rounded-3xl bg-white/95 backdrop-blur-2xl border border-lavender-200/90 shadow-[0_20px_45px_rgba(124,58,237,0.18)] animate-cool-page">
           <div className="grid grid-cols-2 gap-2 mb-3">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
@@ -195,7 +188,7 @@ export default function Navbar({
                   onClick={() => handleNavClick(item.id)}
                   className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                     isActive
-                      ? 'bg-purple-600 text-white shadow-sm'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
                       : 'text-lavender-800 hover:bg-lavender-100/70'
                   }`}
                 >
@@ -239,7 +232,7 @@ export default function Navbar({
                     onOpenRegister();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="flex-1 py-2.5 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-sm text-center"
+                  className="flex-1 py-2.5 rounded-xl text-xs font-extrabold text-white bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 shadow-md text-center"
                 >
                   Apply Now →
                 </button>

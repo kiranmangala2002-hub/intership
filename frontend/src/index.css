@@ -60,6 +60,83 @@ h1, h2, h3, h4, h5, h6 {
   background: #a78bfa;
 }
 
+/* 3D Perspective & Holographic Dimensional Utility Classes */
+.perspective-800 {
+  perspective: 800px;
+}
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-1500 {
+  perspective: 1500px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.translate-z-2 {
+  transform: translateZ(8px);
+}
+.translate-z-4 {
+  transform: translateZ(16px);
+}
+.translate-z-6 {
+  transform: translateZ(24px);
+}
+.translate-z-8 {
+  transform: translateZ(32px);
+}
+.translate-z-12 {
+  transform: translateZ(48px);
+}
+
+/* Glassmorphism & Holographic Vision Pro Surfaces */
+.glass-panel-3d {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 40px -12px rgba(124, 58, 237, 0.12),
+              0 0 0 1px rgba(215, 196, 247, 0.45),
+              inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glass-panel-3d:hover {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 24px 50px -10px rgba(124, 58, 237, 0.22),
+              0 0 30px rgba(56, 189, 248, 0.2),
+              0 0 0 1px rgba(168, 85, 247, 0.4),
+              inset 0 1px 3px rgba(255, 255, 255, 1);
+}
+
+.glass-pill-3d {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(215, 196, 247, 0.7);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.08),
+              inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Hologram Scanning Beam & Ambient Wave Animation */
+@keyframes holoScanline {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(1000%); opacity: 0; }
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
 /* Cool Futuristic Dimensional Page Transition with Smooth Spring Flow */
 @keyframes coolPageIn {
   0% {

@@ -1,6 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { lookupApplication } from '../services/api';
+import Card3D from '../components/common3d/Card3D';
+import Button3D from '../components/common3d/Button3D';
+import Badge3D from '../components/common3d/Badge3D';
 
 export default function ApplicationsPage({
   applications = [],
@@ -168,16 +171,11 @@ export default function ApplicationsPage({
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 pb-6 border-b border-lavender-200/80">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-extrabold tracking-wider uppercase text-purple-700 bg-purple-100 px-3 py-0.5 rounded-full border border-purple-200/60 shadow-2xs">
-              SPHERONIX Admissions Board
-            </span>
-            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live Backend Connected
-            </span>
+            <Badge3D variant="cyan" pulse={true} label="SPHERONIX Admissions Board" />
+            <Badge3D variant="lavender" pulse={true} label="Live Backend Connected" />
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-lavender-950 tracking-tight">
-            Student Applications & Cohort Portal
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-lavender-950 tracking-tight flex items-center gap-3">
+            <span>Student Applications & Cohort Portal</span>
           </h1>
           <p className="text-xs sm:text-sm text-lavender-700 mt-1 max-w-2xl leading-relaxed">
             Monitor verified applicant records, track live screening stages, review student credentials, and manage corporate internship admissions.
@@ -193,21 +191,24 @@ export default function ApplicationsPage({
             </span>
           )}
           <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button
+            <Button3D
               onClick={handleManualRefresh}
               disabled={isRefreshing || localRefreshing}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold bg-white text-lavender-800 border border-lavender-200 shadow-2xs hover:bg-lavender-50 hover:border-purple-300 transition-all disabled:opacity-50 active:scale-95 cursor-pointer"
-              title="Sync latest live applications and metrics directly from backend"
+              variant="secondary"
+              size="sm"
+              className="flex-1 sm:flex-none cursor-pointer"
             >
-              <span className={(isRefreshing || localRefreshing) ? 'animate-spin' : ''}>🔄</span>
+              <span className={(isRefreshing || localRefreshing) ? 'animate-spin inline-block mr-1' : 'inline-block mr-1'}>🔄</span>
               <span>{(isRefreshing || localRefreshing) ? 'Syncing...' : 'Sync Live'}</span>
-            </button>
-            <button
+            </Button3D>
+            <Button3D
               onClick={onOpenRegister}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_22px_rgba(124,58,237,0.55)] hover:scale-102 active:scale-95 transition-all whitespace-nowrap cursor-pointer"
+              variant="primary"
+              size="sm"
+              className="flex-1 sm:flex-none whitespace-nowrap cursor-pointer"
             >
               <span>➕ New Application</span>
-            </button>
+            </Button3D>
           </div>
         </div>
       </div>
@@ -217,115 +218,141 @@ export default function ApplicationsPage({
       {/* ========================================================= */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Total Volume */}
-        <div
-          onClick={() => {
-            setSelectedStatus('All');
-            setActiveTab('directory');
-          }}
-          className={`cursor-pointer p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
-            selectedStatus === 'All' && activeTab === 'directory'
-              ? 'bg-purple-600 text-white shadow-[0_8px_25px_rgba(147,51,234,0.35)] scale-102 border-purple-500'
-              : 'bg-white/90 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:-translate-y-1 hover:shadow-md'
-          }`}
-        >
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85 mb-0.5">
-            Total Applicants
-          </span>
-          <span className="text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight">
-            {countAll.toLocaleString()}
-          </span>
-          <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            100% Cohort Volume
-          </span>
-        </div>
+        <Card3D maxTilt={10} className="h-full">
+          <div
+            onClick={() => {
+              setSelectedStatus('All');
+              setActiveTab('directory');
+            }}
+            className={`cursor-pointer h-full p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
+              selectedStatus === 'All' && activeTab === 'directory'
+                ? 'bg-gradient-to-br from-purple-600 to-indigo-700 text-white shadow-[0_12px_35px_rgba(147,51,234,0.45)] border-purple-400 ring-2 ring-purple-300'
+                : 'bg-white/95 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:border-purple-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85">
+                Total Applicants
+              </span>
+              <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
+            </div>
+            <span className="text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight my-1">
+              {countAll.toLocaleString()}
+            </span>
+            <span className="text-[10px] font-semibold opacity-85 block">
+              100% Cohort Volume
+            </span>
+          </div>
+        </Card3D>
 
         {/* Shortlisted */}
-        <div
-          onClick={() => {
-            setSelectedStatus('Shortlisted');
-            setActiveTab('directory');
-          }}
-          className={`cursor-pointer p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
-            selectedStatus === 'Shortlisted' && activeTab === 'directory'
-              ? 'bg-emerald-600 text-white shadow-[0_8px_25px_rgba(16,185,129,0.35)] scale-102 border-emerald-500'
-              : 'bg-white/90 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:-translate-y-1 hover:shadow-md'
-          }`}
-        >
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85 mb-0.5">
-            Shortlisted
-          </span>
-          <span className="text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight text-emerald-600 group-hover:text-emerald-700">
-            {countShortlisted.toLocaleString()}
-          </span>
-          <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            {countAll > 0 ? `${((countShortlisted / countAll) * 100).toFixed(1)}% Qualified` : '0% Qualified'}
-          </span>
-        </div>
+        <Card3D maxTilt={10} className="h-full">
+          <div
+            onClick={() => {
+              setSelectedStatus('Shortlisted');
+              setActiveTab('directory');
+            }}
+            className={`cursor-pointer h-full p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
+              selectedStatus === 'Shortlisted' && activeTab === 'directory'
+                ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-[0_12px_35px_rgba(16,185,129,0.45)] border-emerald-400 ring-2 ring-emerald-300'
+                : 'bg-white/95 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:border-emerald-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85">
+                Shortlisted
+              </span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            </div>
+            <span className={`text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight my-1 ${
+              selectedStatus === 'Shortlisted' && activeTab === 'directory' ? 'text-white' : 'text-emerald-600 group-hover:text-emerald-700'
+            }`}>
+              {countShortlisted.toLocaleString()}
+            </span>
+            <span className="text-[10px] font-semibold opacity-85 block">
+              {countAll > 0 ? `${((countShortlisted / countAll) * 100).toFixed(1)}% Qualified` : '0% Qualified'}
+            </span>
+          </div>
+        </Card3D>
 
         {/* Under Review */}
-        <div
-          onClick={() => {
-            setSelectedStatus('Under Review');
-            setActiveTab('directory');
-          }}
-          className={`cursor-pointer p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
-            selectedStatus === 'Under Review' && activeTab === 'directory'
-              ? 'bg-amber-500 text-white shadow-[0_8px_25px_rgba(245,158,11,0.35)] scale-102 border-amber-400'
-              : 'bg-white/90 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:-translate-y-1 hover:shadow-md'
-          }`}
-        >
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85 mb-0.5">
-            Under Evaluation
-          </span>
-          <span className="text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight text-amber-600">
-            {countUnderReview.toLocaleString()}
-          </span>
-          <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            {countAll > 0 ? `${((countUnderReview / countAll) * 100).toFixed(1)}% In Screening` : '0% In Screening'}
-          </span>
-        </div>
+        <Card3D maxTilt={10} className="h-full">
+          <div
+            onClick={() => {
+              setSelectedStatus('Under Review');
+              setActiveTab('directory');
+            }}
+            className={`cursor-pointer h-full p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
+              selectedStatus === 'Under Review' && activeTab === 'directory'
+                ? 'bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-[0_12px_35px_rgba(245,158,11,0.45)] border-amber-400 ring-2 ring-amber-300'
+                : 'bg-white/95 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:border-amber-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85">
+                Under Evaluation
+              </span>
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+            </div>
+            <span className={`text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight my-1 ${
+              selectedStatus === 'Under Review' && activeTab === 'directory' ? 'text-white' : 'text-amber-600'
+            }`}>
+              {countUnderReview.toLocaleString()}
+            </span>
+            <span className="text-[10px] font-semibold opacity-85 block">
+              {countAll > 0 ? `${((countUnderReview / countAll) * 100).toFixed(1)}% In Screening` : '0% In Screening'}
+            </span>
+          </div>
+        </Card3D>
 
         {/* Submitted */}
-        <div
-          onClick={() => {
-            setSelectedStatus('Submitted');
-            setActiveTab('directory');
-          }}
-          className={`cursor-pointer p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
-            selectedStatus === 'Submitted' && activeTab === 'directory'
-              ? 'bg-sky-600 text-white shadow-[0_8px_25px_rgba(2,132,199,0.35)] scale-102 border-sky-500'
-              : 'bg-white/90 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:-translate-y-1 hover:shadow-md'
-          }`}
-        >
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85 mb-0.5">
-            New Submissions
-          </span>
-          <span className="text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight text-sky-600">
-            {countSubmitted.toLocaleString()}
-          </span>
-          <span className="text-[10px] font-semibold opacity-75 mt-0.5 block">
-            {countAll > 0 ? `${((countSubmitted / countAll) * 100).toFixed(1)}% In Queue` : '0% In Queue'}
-          </span>
-        </div>
+        <Card3D maxTilt={10} className="h-full">
+          <div
+            onClick={() => {
+              setSelectedStatus('Submitted');
+              setActiveTab('directory');
+            }}
+            className={`cursor-pointer h-full p-4 sm:p-5 rounded-3xl border transition-all duration-300 text-center relative overflow-hidden group ${
+              selectedStatus === 'Submitted' && activeTab === 'directory'
+                ? 'bg-gradient-to-br from-sky-600 to-cyan-700 text-white shadow-[0_12px_35px_rgba(2,132,199,0.45)] border-sky-400 ring-2 ring-sky-300'
+                : 'bg-white/95 text-lavender-950 border-lavender-200/90 shadow-2xs hover:bg-white hover:border-sky-300'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider block opacity-85">
+                New Submissions
+              </span>
+              <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping" />
+            </div>
+            <span className={`text-2xl sm:text-3xl lg:text-4xl font-black block tracking-tight my-1 ${
+              selectedStatus === 'Submitted' && activeTab === 'directory' ? 'text-white' : 'text-sky-600'
+            }`}>
+              {countSubmitted.toLocaleString()}
+            </span>
+            <span className="text-[10px] font-semibold opacity-85 block">
+              {countAll > 0 ? `${((countSubmitted / countAll) * 100).toFixed(1)}% In Queue` : '0% In Queue'}
+            </span>
+          </div>
+        </Card3D>
       </div>
 
       {/* ========================================================= */}
       {/* 3. INTERACTIVE SECTION TABS NAVIGATION                   */}
       {/* ========================================================= */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 rounded-2xl bg-white/80 backdrop-blur-md border border-lavender-200/80 shadow-2xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-1.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-lavender-200/80 shadow-[0_6px_20px_rgba(124,58,237,0.06)]">
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none w-full sm:w-auto py-0.5">
           <button
             onClick={() => setActiveTab('directory')}
             className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 ${
               activeTab === 'directory'
-                ? 'bg-purple-600 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_4px_14px_rgba(124,58,237,0.4)] scale-102'
                 : 'text-lavender-700 hover:text-lavender-950 hover:bg-lavender-100/60'
             }`}
           >
             <span>📋 Live Applications Directory</span>
             <span
               className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
-                activeTab === 'directory' ? 'bg-purple-800 text-white' : 'bg-lavender-200 text-lavender-800'
+                activeTab === 'directory' ? 'bg-purple-900/60 text-white' : 'bg-lavender-200 text-lavender-800'
               }`}
             >
               {filteredApplications.length}
@@ -336,18 +363,18 @@ export default function ApplicationsPage({
             onClick={() => setActiveTab('tracker')}
             className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'tracker'
-                ? 'bg-purple-600 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_4px_14px_rgba(124,58,237,0.4)] scale-102'
                 : 'text-lavender-700 hover:text-lavender-950 hover:bg-lavender-100/60'
             }`}
           >
-            <span>🔍 Self-Service Status Tracker</span>
+            <span>🔍 Holographic Status Tracker</span>
           </button>
 
           <button
             onClick={() => setActiveTab('analytics')}
             className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'analytics'
-                ? 'bg-purple-600 text-white shadow-xs'
+                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-[0_4px_14px_rgba(124,58,237,0.4)] scale-102'
                 : 'text-lavender-700 hover:text-lavender-950 hover:bg-lavender-100/60'
             }`}
           >
@@ -365,7 +392,7 @@ export default function ApplicationsPage({
                 viewMode === 'grid' ? 'bg-white text-purple-700 shadow-2xs font-bold' : 'text-lavender-600 hover:text-lavender-900'
               }`}
             >
-              🪟 Cards
+              🪟 3D Cards
             </button>
             <button
               onClick={() => setViewMode('table')}
@@ -482,127 +509,126 @@ export default function ApplicationsPage({
                 const badge = getStatusBadge(app.status);
                 const isFullStack = app.domain?.toLowerCase().includes('full stack');
                 return (
-                  <div
-                    key={app._id || app.id}
-                    className="group bg-white/95 backdrop-blur-xl border border-lavender-200/90 rounded-3xl p-5 sm:p-6 shadow-[0_4px_20px_rgba(124,58,237,0.05)] hover:shadow-[0_12px_35px_rgba(124,58,237,0.12)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden"
-                  >
-                    {/* Top Accent Strip */}
-                    <div
-                      className={`-mt-6 -mx-6 h-1.5 mb-5 bg-gradient-to-r ${
-                        isFullStack
-                          ? 'from-purple-600 to-indigo-600'
-                          : 'from-teal-500 to-emerald-500'
-                      }`}
-                    />
+                  <Card3D key={app._id || app.id} maxTilt={6} className="h-full">
+                    <div className="group bg-white/95 backdrop-blur-xl border border-lavender-200/90 rounded-3xl p-5 sm:p-6 shadow-[0_4px_20px_rgba(124,58,237,0.06)] hover:shadow-[0_16px_40px_rgba(124,58,237,0.18)] transition-all duration-300 flex flex-col justify-between overflow-hidden h-full">
+                      {/* Top Laser Accent Strip */}
+                      <div
+                        className={`-mt-6 -mx-6 h-1.5 mb-5 bg-gradient-to-r shadow-sm ${
+                          isFullStack
+                            ? 'from-purple-600 via-indigo-600 to-cyan-500'
+                            : 'from-teal-500 via-emerald-500 to-cyan-400'
+                        }`}
+                      />
 
-                    <div>
-                      {/* Header Profile Row */}
-                      <div className="flex justify-between items-start gap-3 mb-3.5">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-2xs flex-shrink-0">
-                            {app.name?.charAt(0)?.toUpperCase() || 'S'}
+                      <div>
+                        {/* Header Profile Row */}
+                        <div className="flex justify-between items-start gap-3 mb-3.5">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-md flex-shrink-0 ring-2 ring-purple-200">
+                              {app.name?.charAt(0)?.toUpperCase() || 'S'}
+                            </div>
+                            <div>
+                              <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
+                                {app.name}
+                              </h4>
+                              <span className="text-[11px] font-mono font-bold text-purple-700 block mt-0.5">
+                                {app.applicationId || 'SPH-2026'}
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
-                              {app.name}
-                            </h4>
-                            <span className="text-[11px] font-mono font-bold text-purple-700 block mt-0.5">
-                              {app.applicationId || 'SPH-2026'}
+
+                          {/* Status Pill */}
+                          <span
+                            className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border flex items-center gap-1.5 shadow-2xs ${badge.bg}`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${badge.dot} animate-pulse`} />
+                            <span>{badge.label}</span>
+                          </span>
+                        </div>
+
+                        {/* Domain Tag */}
+                        <div className="mb-3">
+                          <span
+                            className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border inline-flex items-center gap-1.5 ${
+                              isFullStack
+                                ? 'bg-purple-50 text-purple-800 border-purple-200/80'
+                                : 'bg-teal-50 text-teal-800 border-teal-200/80'
+                            }`}
+                          >
+                            <span>{isFullStack ? '💻' : '⚡'}</span>
+                            <span className="truncate max-w-[200px]">{app.domain}</span>
+                          </span>
+                        </div>
+
+                        {/* College & Details Box */}
+                        <div className="space-y-1.5 bg-lavender-50/70 p-3.5 rounded-2xl border border-lavender-200/70 text-xs mb-4">
+                          <div className="flex items-start justify-between gap-2">
+                            <span className="text-lavender-500 font-semibold flex-shrink-0 pt-0.5">College:</span>
+                            <span
+                              title={app.collegeName}
+                              className="text-lavender-950 font-bold text-right text-xs leading-snug line-clamp-2 max-w-[210px]"
+                            >
+                              {app.collegeName}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-lavender-500 font-semibold">Batch:</span>
+                            <span className="text-lavender-800 font-bold">Class of {app.passoutYear}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-lavender-500 font-semibold">Contact:</span>
+                            <span className="text-lavender-800 font-mono text-[11px] truncate max-w-[170px]">
+                              {app.contact}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-lavender-500 font-semibold">Resume:</span>
+                            <span className="text-purple-700 font-medium text-[11px] truncate max-w-[170px]">
+                              📄 {app.resumeName || 'Resume.pdf'}
                             </span>
                           </div>
                         </div>
-
-                        {/* Status Pill */}
-                        <span
-                          className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border flex items-center gap-1.5 shadow-2xs ${badge.bg}`}
-                        >
-                          <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
-                          <span>{badge.label}</span>
-                        </span>
                       </div>
 
-                      {/* Domain Tag */}
-                      <div className="mb-3">
-                        <span
-                          className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border inline-flex items-center gap-1 ${
-                            isFullStack
-                              ? 'bg-purple-50 text-purple-800 border-purple-200'
-                              : 'bg-teal-50 text-teal-800 border-teal-200'
-                          }`}
-                        >
-                          <span>{isFullStack ? '💻' : '⚡'}</span>
-                          <span className="truncate max-w-[200px]">{app.domain}</span>
-                        </span>
-                      </div>
-
-                      {/* College & Details Box */}
-                      <div className="space-y-1.5 bg-lavender-50/70 p-3.5 rounded-2xl border border-lavender-200/70 text-xs mb-4">
-                        <div className="flex items-start justify-between gap-2">
-                          <span className="text-lavender-500 font-semibold flex-shrink-0 pt-0.5">College:</span>
-                          <span
-                            title={app.collegeName}
-                            className="text-lavender-950 font-bold text-right text-xs leading-snug line-clamp-2 max-w-[210px]"
-                          >
-                            {app.collegeName}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lavender-500 font-semibold">Batch:</span>
-                          <span className="text-lavender-800 font-bold">Class of {app.passoutYear}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lavender-500 font-semibold">Contact:</span>
-                          <span className="text-lavender-800 font-mono text-[11px] truncate max-w-[170px]">
-                            {app.contact}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lavender-500 font-semibold">Resume:</span>
-                          <span className="text-purple-700 font-medium text-[11px] truncate max-w-[170px]">
-                            📄 {app.resumeName || 'Resume.pdf'}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Footer Actions Row */}
-                    <div className="pt-3 border-t border-lavender-100 flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => setSelectedApplicant(app)}
-                        className="flex-1 py-2 px-3 rounded-xl text-xs font-bold text-purple-900 bg-lavender-100 hover:bg-lavender-200 border border-lavender-200/80 transition-all text-center"
-                      >
-                        👁️ View Dossier
-                      </button>
-
-                      {/* Quick Status Select */}
-                      <select
-                        value={app.status || 'Submitted'}
-                        onChange={(e) => {
-                          if (onUpdateStatus) {
-                            onUpdateStatus(app._id || app.id, e.target.value);
-                          }
-                        }}
-                        aria-label="Update Applicant Status"
-                        className="py-2 px-2 rounded-xl text-xs font-bold bg-white border border-lavender-300 text-lavender-800 focus:outline-none focus:ring-1 focus:ring-purple-500 cursor-pointer"
-                      >
-                        <option value="Submitted">Submitted</option>
-                        <option value="Under Review">Under Review</option>
-                        <option value="Shortlisted">Shortlisted</option>
-                        <option value="Interview Scheduled">Interview Scheduled</option>
-                      </select>
-
-                      {/* Delete / Withdraw Button */}
-                      {onDeleteApplication && (
+                      {/* Footer Actions Row */}
+                      <div className="pt-3 border-t border-lavender-100 flex items-center justify-between gap-2">
                         <button
-                          onClick={() => onDeleteApplication(app._id || app.id)}
-                          title="Withdraw Application"
-                          className="p-2 rounded-xl text-xs text-rose-600 hover:bg-rose-50 border border-rose-200/80 transition-all"
+                          onClick={() => setSelectedApplicant(app)}
+                          className="flex-1 py-2 px-3 rounded-xl text-xs font-bold text-purple-900 bg-lavender-100/90 hover:bg-purple-100 hover:text-purple-950 border border-lavender-200 transition-all text-center cursor-pointer shadow-2xs hover:scale-102"
                         >
-                          🗑️
+                          👁️ View Dossier
                         </button>
-                      )}
+
+                        {/* Quick Status Select */}
+                        <select
+                          value={app.status || 'Submitted'}
+                          onChange={(e) => {
+                            if (onUpdateStatus) {
+                              onUpdateStatus(app._id || app.id, e.target.value);
+                            }
+                          }}
+                          aria-label="Update Applicant Status"
+                          className="py-2 px-2 rounded-xl text-xs font-bold bg-white border border-lavender-300 text-lavender-800 focus:outline-none focus:ring-1 focus:ring-purple-500 cursor-pointer"
+                        >
+                          <option value="Submitted">Submitted</option>
+                          <option value="Under Review">Under Review</option>
+                          <option value="Shortlisted">Shortlisted</option>
+                          <option value="Interview Scheduled">Interview Scheduled</option>
+                        </select>
+
+                        {/* Delete / Withdraw Button */}
+                        {onDeleteApplication && (
+                          <button
+                            onClick={() => onDeleteApplication(app._id || app.id)}
+                            title="Withdraw Application"
+                            className="p-2 rounded-xl text-xs text-rose-600 hover:bg-rose-50 border border-rose-200/80 transition-all cursor-pointer"
+                          >
+                            🗑️
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  </Card3D>
                 );
               })}
             </div>
@@ -688,11 +714,14 @@ export default function ApplicationsPage({
       {/* ========================================================= */}
       {activeTab === 'tracker' && (
         <div className="space-y-6 animate-cool-page">
-          <div className="p-7 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-xl border border-lavender-200/90 shadow-[0_10px_35px_rgba(124,58,237,0.08)]">
+          <div className="relative p-7 sm:p-10 rounded-3xl bg-white/95 backdrop-blur-2xl border border-lavender-200/90 shadow-[0_12px_45px_rgba(124,58,237,0.12)] overflow-hidden">
+            {/* Holographic scanning laser line when searching */}
+            {lookupLoading && (
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-purple-600 shadow-[0_0_15px_#22d3ee] animate-pulse" />
+            )}
+
             <div className="max-w-xl mx-auto text-center mb-6">
-              <span className="text-xs font-bold tracking-wider uppercase text-purple-700 bg-purple-100/80 px-3 py-1 rounded-full border border-purple-200/60 inline-flex items-center gap-1.5">
-                🔍 Applicant Self-Service Portal
-              </span>
+              <Badge3D variant="cyan" pulse={true} label="Holographic Applicant Lookup" />
               <h3 className="text-xl sm:text-2xl font-black text-lavender-950 mt-2">
                 Track Your Application Review Status
               </h3>
@@ -707,108 +736,113 @@ export default function ApplicationsPage({
                 value={lookupQuery}
                 onChange={(e) => setLookupQuery(e.target.value)}
                 placeholder="Enter Application ID or Email..."
-                className="flex-1 px-4 py-3 rounded-2xl bg-lavender-50/70 border border-lavender-200/90 text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
+                className="flex-1 px-4 py-3 rounded-2xl bg-lavender-50/80 border border-lavender-200/90 text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all shadow-inner"
               />
-              <button
+              <Button3D
                 type="submit"
                 disabled={lookupLoading}
-                className="px-6 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm transition-all disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap"
+                variant="primary"
+                size="md"
+                className="whitespace-nowrap cursor-pointer justify-center"
               >
-                {lookupLoading ? 'Checking...' : 'Check Status →'}
-              </button>
+                {lookupLoading ? 'Scanning...' : 'Check Status →'}
+              </Button3D>
             </form>
 
             {lookupError && (
-              <div className="mt-4 p-3.5 max-w-lg mx-auto rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs text-center font-medium">
+              <div className="mt-4 p-3.5 max-w-lg mx-auto rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs text-center font-medium shadow-2xs">
                 ⚠️ {lookupError}
               </div>
             )}
 
             {lookupResult && (
-              <div className="mt-8 max-w-2xl mx-auto p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-lavender-50 via-white to-purple-50/40 border border-purple-200 shadow-md">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-lavender-100">
-                  <div>
-                    <span className="text-xs font-mono font-bold text-purple-700 block">
-                      {lookupResult.applicationId}
+              <Card3D maxTilt={6} className="mt-8 max-w-2xl mx-auto">
+                <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-lavender-50 via-white to-purple-50/60 border border-purple-300/80 shadow-[0_12px_35px_rgba(124,58,237,0.15)]">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-lavender-100">
+                    <div>
+                      <span className="text-xs font-mono font-bold text-purple-700 block">
+                        {lookupResult.applicationId}
+                      </span>
+                      <h4 className="text-lg font-black text-lavender-950 mt-0.5">
+                        {lookupResult.name}
+                      </h4>
+                      <p className="text-xs text-lavender-600">
+                        {lookupResult.collegeName} • Class of {lookupResult.passoutYear}
+                      </p>
+                    </div>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-black border flex items-center gap-1.5 shadow-2xs ${
+                        getStatusBadge(lookupResult.status).bg
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${getStatusBadge(lookupResult.status).dot} animate-pulse`} />
+                      <span>{lookupResult.status || 'Submitted'}</span>
                     </span>
-                    <h4 className="text-lg font-black text-lavender-950 mt-0.5">
-                      {lookupResult.name}
-                    </h4>
-                    <p className="text-xs text-lavender-600">
-                      {lookupResult.collegeName} • Class of {lookupResult.passoutYear}
-                    </p>
                   </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-black border ${
-                      getStatusBadge(lookupResult.status).bg
-                    }`}
-                  >
-                    ● {lookupResult.status || 'Submitted'}
-                  </span>
-                </div>
 
-                {/* 4-Stage Review Progress Pipeline */}
-                <div className="mt-6 pt-2">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-700 block mb-4">
-                    Admissions Screening Roadmap
-                  </span>
+                  {/* 4-Stage Review Progress Pipeline */}
+                  <div className="mt-6 pt-2">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-700 block mb-4">
+                      Admissions Screening Roadmap
+                    </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                    {[
-                      {
-                        num: '1',
-                        label: 'Application Received',
-                        desc: 'Digitally logged in cohort',
-                        done: true,
-                      },
-                      {
-                        num: '2',
-                        label: 'Mentor Screening',
-                        desc: 'Resume & domain review',
-                        done: lookupResult.status !== 'Submitted',
-                      },
-                      {
-                        num: '3',
-                        label: 'Technical Round',
-                        desc: 'Coding architecture review',
-                        done: lookupResult.status === 'Shortlisted' || lookupResult.status === 'Interview Scheduled',
-                      },
-                      {
-                        num: '4',
-                        label: 'Corporate Offer',
-                        desc: 'Stipend assignment',
-                        done: lookupResult.status === 'Interview Scheduled',
-                      },
-                    ].map((step, idx) => (
-                      <div
-                        key={idx}
-                        className={`p-3 rounded-2xl border text-center transition-all ${
-                          step.done
-                            ? 'bg-emerald-50 border-emerald-200 text-emerald-900 shadow-2xs'
-                            : 'bg-white border-lavender-200 text-lavender-600 opacity-60'
-                        }`}
-                      >
-                        <span
-                          className={`w-6 h-6 rounded-full mx-auto mb-1 text-xs font-black flex items-center justify-center ${
-                            step.done ? 'bg-emerald-500 text-white' : 'bg-lavender-100 text-lavender-700'
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      {[
+                        {
+                          num: '1',
+                          label: 'Application Received',
+                          desc: 'Digitally logged in cohort',
+                          done: true,
+                        },
+                        {
+                          num: '2',
+                          label: 'Mentor Screening',
+                          desc: 'Resume & domain review',
+                          done: lookupResult.status !== 'Submitted',
+                        },
+                        {
+                          num: '3',
+                          label: 'Technical Round',
+                          desc: 'Coding architecture review',
+                          done: lookupResult.status === 'Shortlisted' || lookupResult.status === 'Interview Scheduled',
+                        },
+                        {
+                          num: '4',
+                          label: 'Corporate Offer',
+                          desc: 'Stipend assignment',
+                          done: lookupResult.status === 'Interview Scheduled',
+                        },
+                      ].map((step, idx) => (
+                        <div
+                          key={idx}
+                          className={`p-3 rounded-2xl border text-center transition-all ${
+                            step.done
+                              ? 'bg-emerald-50/90 border-emerald-300 text-emerald-900 shadow-2xs'
+                              : 'bg-white/80 border-lavender-200 text-lavender-600 opacity-60'
                           }`}
                         >
-                          {step.done ? '✓' : step.num}
-                        </span>
-                        <h6 className="text-xs font-bold">{step.label}</h6>
-                        <p className="text-[10px] text-lavender-500 mt-0.5">{step.desc}</p>
-                      </div>
-                    ))}
+                          <span
+                            className={`w-6 h-6 rounded-full mx-auto mb-1 text-xs font-black flex items-center justify-center ${
+                              step.done ? 'bg-emerald-500 text-white shadow-xs' : 'bg-lavender-100 text-lavender-700'
+                            }`}
+                          >
+                            {step.done ? '✓' : step.num}
+                          </span>
+                          <h6 className="text-xs font-bold">{step.label}</h6>
+                          <p className="text-[10px] text-lavender-500 mt-0.5">{step.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 pt-4 border-t border-lavender-100 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-lavender-700 gap-2">
+                    <span>Track: <strong>{lookupResult.domain}</strong></span>
+                    <span className="text-[11px] text-lavender-500 font-mono">
+                      Applied: {new Date(lookupResult.createdAt).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
-
-                <div className="mt-5 pt-4 border-t border-lavender-100 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-lavender-700 gap-2">
-                  <span>Track: <strong>{lookupResult.domain}</strong></span>
-                  <span className="text-[11px] text-lavender-500 font-mono">
-                    Applied: {new Date(lookupResult.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
+              </Card3D>
             )}
           </div>
         </div>
@@ -820,107 +854,111 @@ export default function ApplicationsPage({
       {activeTab === 'analytics' && (
         <div className="space-y-6 animate-cool-page">
           {/* Spotlight Card */}
-          <div className="p-7 sm:p-9 rounded-3xl bg-white/90 backdrop-blur-xl border border-lavender-200/90 shadow-sm space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-100 px-3 py-0.5 rounded-full">
-                  Recruitment Funnel
-                </span>
-                <h3 className="text-2xl font-black text-lavender-950 mt-1.5">
-                  Corporate Evaluation Pipeline
-                </h3>
-                <p className="text-xs text-lavender-600 mt-0.5">
-                  Real-time progression through applicant screening stages.
-                </p>
-              </div>
-
-              <div className="bg-lavender-50 px-4 py-2 rounded-2xl border border-lavender-200 text-right">
-                <span className="text-[10px] font-bold text-lavender-500 uppercase">Total Pool</span>
-                <span className="text-2xl font-black text-purple-700 block">{countAll.toLocaleString()}</span>
-              </div>
-            </div>
-
-            {/* Funnel Progress Bars */}
-            <div className="space-y-4 pt-2">
-              {[
-                {
-                  label: '1. Total Applications Received',
-                  count: countAll,
-                  pct: 100,
-                  color: 'bg-purple-600',
-                },
-                {
-                  label: '2. In Active Technical Evaluation',
-                  count: countUnderReview,
-                  pct: countAll > 0 ? ((countUnderReview / countAll) * 100).toFixed(1) : '0.0',
-                  color: 'bg-amber-400',
-                },
-                {
-                  label: '3. Shortlisted for Technical Interviews',
-                  count: countShortlisted,
-                  pct: countAll > 0 ? ((countShortlisted / countAll) * 100).toFixed(1) : '0.0',
-                  color: 'bg-emerald-500',
-                },
-                {
-                  label: '4. Newly Received / In Queue',
-                  count: countSubmitted,
-                  pct: countAll > 0 ? ((countSubmitted / countAll) * 100).toFixed(1) : '0.0',
-                  color: 'bg-sky-500',
-                },
-              ].map((stage, idx) => (
-                <div key={idx} className="space-y-1.5">
-                  <div className="flex justify-between items-center text-xs font-bold text-lavender-900">
-                    <span>{stage.label}</span>
-                    <span>
-                      {stage.count.toLocaleString()} ({stage.pct}%)
-                    </span>
-                  </div>
-                  <div className="h-2.5 w-full bg-lavender-100 rounded-full overflow-hidden shadow-inner">
-                    <div
-                      className={`h-full ${stage.color} transition-all duration-700 rounded-full`}
-                      style={{ width: `${stage.pct}%` }}
-                    />
-                  </div>
+          <Card3D maxTilt={4}>
+            <div className="p-7 sm:p-9 rounded-3xl bg-white/95 backdrop-blur-xl border border-lavender-200/90 shadow-[0_10px_35px_rgba(124,58,237,0.08)] space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <Badge3D variant="lavender" label="Recruitment Funnel" />
+                  <h3 className="text-2xl font-black text-lavender-950 mt-1.5">
+                    Corporate Evaluation Pipeline
+                  </h3>
+                  <p className="text-xs text-lavender-600 mt-0.5">
+                    Real-time progression through applicant screening stages.
+                  </p>
                 </div>
-              ))}
+
+                <div className="bg-lavender-50/80 px-4 py-2 rounded-2xl border border-lavender-200 text-right shadow-2xs">
+                  <span className="text-[10px] font-bold text-lavender-500 uppercase">Total Pool</span>
+                  <span className="text-2xl font-black text-purple-700 block">{countAll.toLocaleString()}</span>
+                </div>
+              </div>
+
+              {/* Funnel Progress Bars */}
+              <div className="space-y-4 pt-2">
+                {[
+                  {
+                    label: '1. Total Applications Received',
+                    count: countAll,
+                    pct: 100,
+                    color: 'bg-gradient-to-r from-purple-600 to-indigo-600',
+                  },
+                  {
+                    label: '2. In Active Technical Evaluation',
+                    count: countUnderReview,
+                    pct: countAll > 0 ? ((countUnderReview / countAll) * 100).toFixed(1) : '0.0',
+                    color: 'bg-gradient-to-r from-amber-400 to-amber-500',
+                  },
+                  {
+                    label: '3. Shortlisted for Technical Interviews',
+                    count: countShortlisted,
+                    pct: countAll > 0 ? ((countShortlisted / countAll) * 100).toFixed(1) : '0.0',
+                    color: 'bg-gradient-to-r from-emerald-500 to-teal-500',
+                  },
+                  {
+                    label: '4. Newly Received / In Queue',
+                    count: countSubmitted,
+                    pct: countAll > 0 ? ((countSubmitted / countAll) * 100).toFixed(1) : '0.0',
+                    color: 'bg-gradient-to-r from-sky-500 to-cyan-500',
+                  },
+                ].map((stage, idx) => (
+                  <div key={idx} className="space-y-1.5">
+                    <div className="flex justify-between items-center text-xs font-bold text-lavender-900">
+                      <span>{stage.label}</span>
+                      <span>
+                        {stage.count.toLocaleString()} ({stage.pct}%)
+                      </span>
+                    </div>
+                    <div className="h-3 w-full bg-lavender-100 rounded-full overflow-hidden shadow-inner p-0.5">
+                      <div
+                        className={`h-full ${stage.color} transition-all duration-700 rounded-full shadow-sm`}
+                        style={{ width: `${stage.pct}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </Card3D>
 
           {/* Domain Track Distribution Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="p-6 rounded-3xl bg-white border border-lavender-200 shadow-2xs flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-black uppercase text-purple-600 block mb-1">
-                  Track 01
-                </span>
-                <h4 className="text-lg font-black text-lavender-950">AI Integrated Full Stack</h4>
-                <p className="text-xs text-lavender-600 mt-0.5">React, Node.js, AI Agents & Cloud AWS</p>
-                <span className="inline-block mt-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  ₹10,000 – ₹15,000/mo (Performance Based)
-                </span>
+            <Card3D maxTilt={6} className="h-full">
+              <div className="p-6 rounded-3xl bg-white/95 border border-lavender-200/90 shadow-[0_6px_25px_rgba(124,58,237,0.06)] flex items-center justify-between h-full">
+                <div>
+                  <span className="text-[10px] font-black uppercase text-purple-600 block mb-1">
+                    Track 01
+                  </span>
+                  <h4 className="text-lg font-black text-lavender-950">AI Integrated Full Stack</h4>
+                  <p className="text-xs text-lavender-600 mt-0.5">React, Node.js, AI Agents & Cloud AWS</p>
+                  <span className="inline-block mt-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shadow-2xs">
+                    ₹10,000 – ₹15,000/mo (Performance Based)
+                  </span>
+                </div>
+                <div className="text-right pl-4 border-l border-lavender-100">
+                  <span className="text-3xl font-black text-lavender-900 block">{countAiFullStack.toLocaleString()}</span>
+                  <span className="text-[10px] font-bold text-lavender-500 uppercase">{pctAiFullStack}% Share</span>
+                </div>
               </div>
-              <div className="text-right pl-4 border-l border-lavender-100">
-                <span className="text-3xl font-black text-lavender-900 block">{countAiFullStack.toLocaleString()}</span>
-                <span className="text-[10px] font-bold text-lavender-500 uppercase">{pctAiFullStack}% Share</span>
-              </div>
-            </div>
+            </Card3D>
 
-            <div className="p-6 rounded-3xl bg-white border border-lavender-200 shadow-2xs flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-black uppercase text-teal-600 block mb-1">
-                  Track 02
-                </span>
-                <h4 className="text-lg font-black text-lavender-950">Embedded Systems & IoT</h4>
-                <p className="text-xs text-lavender-600 mt-0.5">ARM Cortex, FreeRTOS, ESP32 & PCB Design</p>
-                <span className="inline-block mt-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  ₹10,000 – ₹15,000/mo (Performance Based)
-                </span>
+            <Card3D maxTilt={6} className="h-full">
+              <div className="p-6 rounded-3xl bg-white/95 border border-lavender-200/90 shadow-[0_6px_25px_rgba(124,58,237,0.06)] flex items-center justify-between h-full">
+                <div>
+                  <span className="text-[10px] font-black uppercase text-teal-600 block mb-1">
+                    Track 02
+                  </span>
+                  <h4 className="text-lg font-black text-lavender-950">Embedded Systems & IoT</h4>
+                  <p className="text-xs text-lavender-600 mt-0.5">ARM Cortex, FreeRTOS, ESP32 & PCB Design</p>
+                  <span className="inline-block mt-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shadow-2xs">
+                    ₹10,000 – ₹15,000/mo (Performance Based)
+                  </span>
+                </div>
+                <div className="text-right pl-4 border-l border-lavender-100">
+                  <span className="text-3xl font-black text-lavender-900 block">{countEmbeddedIot.toLocaleString()}</span>
+                  <span className="text-[10px] font-bold text-lavender-500 uppercase">{pctEmbeddedIot}% Share</span>
+                </div>
               </div>
-              <div className="text-right pl-4 border-l border-lavender-100">
-                <span className="text-3xl font-black text-lavender-900 block">{countEmbeddedIot.toLocaleString()}</span>
-                <span className="text-[10px] font-bold text-lavender-500 uppercase">{pctEmbeddedIot}% Share</span>
-              </div>
-            </div>
+            </Card3D>
           </div>
         </div>
       )}
@@ -935,7 +973,7 @@ export default function ApplicationsPage({
             onClick={() => setSelectedApplicant(null)}
           >
             <div
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-[0_25px_70px_rgba(124,58,237,0.3)] flex flex-col overflow-hidden border border-lavender-200 animate-cool-page my-auto"
+              className="relative w-full max-w-2xl bg-white/95 backdrop-blur-2xl rounded-3xl shadow-[0_25px_70px_rgba(124,58,237,0.35)] flex flex-col overflow-hidden border border-lavender-200 animate-cool-page my-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Top Gradient Stripe */}
@@ -950,7 +988,7 @@ export default function ApplicationsPage({
               {/* Header */}
               <div className="p-6 border-b border-lavender-100 flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-2xs flex-shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-md flex-shrink-0 ring-2 ring-purple-200">
                     {selectedApplicant.name?.charAt(0)?.toUpperCase() || 'S'}
                   </div>
                   <div>
@@ -968,7 +1006,7 @@ export default function ApplicationsPage({
 
                 <button
                   onClick={() => setSelectedApplicant(null)}
-                  className="w-8 h-8 rounded-full bg-lavender-100 hover:bg-lavender-200 text-lavender-700 flex items-center justify-center font-bold text-sm"
+                  className="w-8 h-8 rounded-full bg-lavender-100 hover:bg-lavender-200 text-lavender-700 flex items-center justify-center font-bold text-sm cursor-pointer"
                 >
                   ✕
                 </button>

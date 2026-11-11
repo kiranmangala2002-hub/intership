@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { submitInquiry } from '../services/api';
+import Card3D from './common3d/Card3D';
+import Button3D from './common3d/Button3D';
+import Badge3D from './common3d/Badge3D';
 
 const FAQS = [
   {
@@ -94,39 +97,40 @@ export default function FaqSection({ onOpenRegister }) {
         {FAQS.map((faq, idx) => {
           const isOpen = openIndex === idx;
           return (
-            <div
-              key={idx}
-              className={`rounded-2xl transition-all duration-200 overflow-hidden border ${isOpen
-                  ? 'bg-white shadow-[0_8px_25px_rgba(124,58,237,0.1)] border-purple-300'
-                  : 'bg-white/85 backdrop-blur-md border-lavender-200/90 hover:bg-white shadow-2xs'
-                }`}
-            >
-              <button
-                onClick={() => toggleFaq(idx)}
-                className="w-full px-6 py-4.5 text-left flex justify-between items-center gap-4 transition-colors"
+            <Card3D key={idx} maxTilt={4}>
+              <div
+                className={`rounded-2xl transition-all duration-200 overflow-hidden border ${isOpen
+                    ? 'bg-white shadow-[0_8px_25px_rgba(124,58,237,0.12)] border-purple-400'
+                    : 'bg-white/90 backdrop-blur-md border-lavender-200/90 hover:bg-white shadow-2xs'
+                  }`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-purple-100 text-purple-800">
-                    {faq.category}
-                  </span>
-                  <span className="text-sm sm:text-base font-bold text-lavender-950">
-                    {faq.q}
-                  </span>
-                </div>
-                <span
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180 bg-purple-600 text-white' : 'bg-lavender-100 text-purple-800'
-                    }`}
+                <button
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full px-6 py-4.5 text-left flex justify-between items-center gap-4 transition-colors cursor-pointer"
                 >
-                  ▼
-                </span>
-              </button>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-purple-100 text-purple-800 border border-purple-200/60 shadow-2xs">
+                      {faq.category}
+                    </span>
+                    <span className="text-sm sm:text-base font-bold text-lavender-950">
+                      {faq.q}
+                    </span>
+                  </div>
+                  <span
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180 bg-purple-600 text-white shadow-xs' : 'bg-lavender-100 text-purple-800'
+                      }`}
+                  >
+                    ▼
+                  </span>
+                </button>
 
-              {isOpen && (
-                <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-lavender-800/90 leading-relaxed border-t border-lavender-100/70">
-                  {faq.a}
-                </div>
-              )}
-            </div>
+                {isOpen && (
+                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-lavender-800/90 leading-relaxed border-t border-lavender-100/70">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            </Card3D>
           );
         })}
       </div>
@@ -134,125 +138,127 @@ export default function FaqSection({ onOpenRegister }) {
       {/* ========================================================= */}
       {/* STUDENT QUERY SUBMISSION FORM (Directly connected to MongoDB) */}
       {/* ========================================================= */}
-      <div className="max-w-3xl mx-auto p-7 sm:p-9 rounded-3xl bg-white/95 backdrop-blur-xl border border-lavender-200/90 shadow-[0_12px_40px_rgba(124,58,237,0.08)] relative overflow-hidden">
-        {/* Top Accent Strip */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600" />
+      <Card3D maxTilt={4} className="max-w-3xl mx-auto">
+        <div className="p-7 sm:p-9 rounded-3xl bg-white/95 backdrop-blur-2xl border border-lavender-200/90 shadow-[0_12px_45px_rgba(124,58,237,0.1)] relative overflow-hidden">
+          {/* Top Holographic Laser Accent Strip */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-purple-600 via-cyan-400 to-indigo-600 shadow-[0_0_10px_#38bdf8]" />
 
-        <div className="text-center max-w-xl mx-auto mb-6">
-          <span className="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-100 px-3.5 py-1 rounded-full border border-purple-200/60 inline-flex items-center gap-1.5 mb-2">
-            💬 Have Questions or Doubts?
-          </span>
-          <h3 className="text-2xl sm:text-3xl font-black text-lavender-950">
-            Submit a Student Query to Senior Mentors
-          </h3>
-          <p className="text-xs sm:text-sm text-lavender-700 mt-1.5">
-            Ask any questions regarding domain curriculum, milestone evaluations, performance stipends, or batch schedules.
-          </p>
-        </div>
-
-        {querySuccess && (
-          <div className="p-4 mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium flex items-center gap-2">
-            <span>✅</span>
-            <span>{querySuccess}</span>
+          <div className="text-center max-w-xl mx-auto mb-6">
+            <Badge3D variant="lavender" pulse={true} label="💬 Have Questions or Doubts?" />
+            <h3 className="text-2xl sm:text-3xl font-black text-lavender-950 mt-2">
+              Submit a Student Query to Senior Mentors
+            </h3>
+            <p className="text-xs sm:text-sm text-lavender-700 mt-1.5">
+              Ask any questions regarding domain curriculum, milestone evaluations, performance stipends, or batch schedules.
+            </p>
           </div>
-        )}
 
-        {queryError && (
-          <div className="p-4 mb-6 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm font-medium flex items-center gap-2">
-            <span>⚠️</span>
-            <span>{queryError}</span>
-          </div>
-        )}
+          {querySuccess && (
+            <div className="p-4 mb-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium flex items-center gap-2 shadow-2xs">
+              <span>✅</span>
+              <span>{querySuccess}</span>
+            </div>
+          )}
 
-        <form onSubmit={handleQuerySubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-bold text-lavender-900 block mb-1">
-                Your Full Name
-              </label>
-              <input
-                type="text"
-                value={queryForm.name}
-                onChange={(e) => setQueryForm({ ...queryForm, name: e.target.value })}
-                placeholder="e.g. Kiran Kumar"
-                className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
-              />
+          {queryError && (
+            <div className="p-4 mb-6 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm font-medium flex items-center gap-2 shadow-2xs">
+              <span>⚠️</span>
+              <span>{queryError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleQuerySubmit} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-lavender-900 block mb-1">
+                  Your Full Name
+                </label>
+                <input
+                  type="text"
+                  value={queryForm.name}
+                  onChange={(e) => setQueryForm({ ...queryForm, name: e.target.value })}
+                  placeholder="e.g. Kiran Kumar"
+                  className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all shadow-inner"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-lavender-900 block mb-1">
+                  Email Address <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={queryForm.email}
+                  onChange={(e) => setQueryForm({ ...queryForm, email: e.target.value })}
+                  placeholder="student@example.com"
+                  className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all shadow-inner"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-lavender-900 block mb-1">
+                  Contact Phone / WhatsApp
+                </label>
+                <input
+                  type="tel"
+                  value={queryForm.phone}
+                  onChange={(e) => setQueryForm({ ...queryForm, phone: e.target.value })}
+                  placeholder="+91 9876543210"
+                  className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all shadow-inner"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-lavender-900 block mb-1">
+                  Domain of Interest
+                </label>
+                <select
+                  value={queryForm.domain}
+                  onChange={(e) => setQueryForm({ ...queryForm, domain: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all cursor-pointer"
+                >
+                  <option value="AI Integrated Full Stack Development">AI Integrated Full Stack Development</option>
+                  <option value="Embedded Systems & IoT">Embedded Systems & IoT</option>
+                  <option value="Stipend & Milestone Policies">Stipend & Milestone Policies</option>
+                  <option value="General Admissions Inquiry">General Admissions Inquiry</option>
+                </select>
+              </div>
             </div>
 
             <div>
               <label className="text-xs font-bold text-lavender-900 block mb-1">
-                Email Address <span className="text-rose-500">*</span>
+                Your Question / Query Details <span className="text-rose-500">*</span>
               </label>
-              <input
-                type="email"
+              <textarea
                 required
-                value={queryForm.email}
-                onChange={(e) => setQueryForm({ ...queryForm, email: e.target.value })}
-                placeholder="student@example.com"
-                className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-bold text-lavender-900 block mb-1">
-                Contact Phone / WhatsApp
-              </label>
-              <input
-                type="tel"
-                value={queryForm.phone}
-                onChange={(e) => setQueryForm({ ...queryForm, phone: e.target.value })}
-                placeholder="+91 9876543210"
-                className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
+                rows={4}
+                value={queryForm.message}
+                onChange={(e) => setQueryForm({ ...queryForm, message: e.target.value })}
+                placeholder="Ask anything about the training modules, daily schedule, college exam leave, or company project experience..."
+                className="w-full px-4 py-3 rounded-2xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all shadow-inner"
               />
             </div>
 
-            <div>
-              <label className="text-xs font-bold text-lavender-900 block mb-1">
-                Domain of Interest
-              </label>
-              <select
-                value={queryForm.domain}
-                onChange={(e) => setQueryForm({ ...queryForm, domain: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all cursor-pointer"
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+              <span className="text-[11px] text-lavender-500">
+                🔒 Inquiries are logged directly into the SPHERONIX database.
+              </span>
+              <Button3D
+                type="submit"
+                disabled={queryLoading}
+                variant="primary"
+                size="md"
+                className="w-full sm:w-auto cursor-pointer justify-center whitespace-nowrap"
               >
-                <option value="AI Integrated Full Stack Development">AI Integrated Full Stack Development</option>
-                <option value="Embedded Systems & IoT">Embedded Systems & IoT</option>
-                <option value="Stipend & Milestone Policies">Stipend & Milestone Policies</option>
-                <option value="General Admissions Inquiry">General Admissions Inquiry</option>
-              </select>
+                {queryLoading ? 'Submitting to Database...' : '🚀 Submit Query to Mentors →'}
+              </Button3D>
             </div>
-          </div>
-
-          <div>
-            <label className="text-xs font-bold text-lavender-900 block mb-1">
-              Your Question / Query Details <span className="text-rose-500">*</span>
-            </label>
-            <textarea
-              required
-              rows={4}
-              value={queryForm.message}
-              onChange={(e) => setQueryForm({ ...queryForm, message: e.target.value })}
-              placeholder="Ask anything about the training modules, daily schedule, college exam leave, or company project experience..."
-              className="w-full px-4 py-3 rounded-2xl bg-lavender-50/70 border border-lavender-200 text-xs sm:text-sm text-lavender-950 placeholder-lavender-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
-            />
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-            <span className="text-[11px] text-lavender-500">
-              🔒 Inquiries are logged directly into the SPHERONIX database.
-            </span>
-            <button
-              type="submit"
-              disabled={queryLoading}
-              className="w-full sm:w-auto px-7 py-3 rounded-2xl text-xs sm:text-sm font-extrabold text-white bg-gradient-to-r from-purple-600 via-lavender-600 to-indigo-600 shadow-[0_4px_16px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_22px_rgba(124,58,237,0.55)] hover:scale-102 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2 whitespace-nowrap"
-            >
-              {queryLoading ? 'Submitting to Database...' : '🚀 Submit Query to Mentors →'}
-            </button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      </Card3D>
     </section>
   );
 }

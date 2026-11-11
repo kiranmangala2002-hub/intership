@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import Card3D from './common3d/Card3D';
+import Button3D from './common3d/Button3D';
+import Badge3D from './common3d/Badge3D';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 // Top Corporate Hiring Partners with official logos and industries (Packages strictly > 4.0 LPA and < 10.0 LPA)
 const HIRING_PARTNERS_ROW_1 = [
@@ -146,9 +150,12 @@ export default function PlacementTreeNetwork() {
       {/* 1. SECTION HEADER                                         */}
       {/* ========================================================= */}
       <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 px-4">
-        <div className="inline-flex items-center gap-2 text-[11px] font-black tracking-widest uppercase text-purple-700 bg-purple-100/90 px-3.5 py-1 rounded-full border border-purple-200/80 mb-3 shadow-2xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          VERIFIED CORPORATE PLACEMENT NETWORK
+        <div className="mb-3">
+          <Badge3D beacon={true} beaconColor="emerald">
+            <span className="font-black uppercase tracking-wider text-[11px] text-purple-700">
+              VERIFIED CORPORATE PLACEMENT NETWORK
+            </span>
+          </Badge3D>
         </div>
         <h2 className="text-3xl sm:text-5xl font-black text-lavender-950 tracking-tight leading-tight">
           Where our talent lands <br className="hidden sm:inline" />
@@ -294,63 +301,62 @@ export default function PlacementTreeNetwork() {
           </div>
         </div>
 
-        {/* 8 Featured Placement Cards Grid */}
+        {/* 8 Featured 3D Placement Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredAlumni.map((alum) => (
-            <div
-              key={alum.id}
-              className="p-5 rounded-3xl bg-white/90 backdrop-blur-xl border border-lavender-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(124,58,237,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
-            >
-              <div>
-                {/* Header: Student Initial & Hiring Company Logo */}
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-2xs flex-shrink-0 group-hover:scale-105 transition-transform">
-                    {alum.initial}
+            <Card3D key={alum.id} maxTilt={10} depth={20} className="h-full">
+              <div className="p-5 rounded-3xl bg-white/95 backdrop-blur-xl border border-lavender-200/90 shadow-[0_6px_25px_rgba(124,58,237,0.06)] hover:shadow-[0_16px_40px_rgba(124,58,237,0.16)] transition-all duration-300 flex flex-col justify-between h-full group">
+                <div>
+                  {/* Header: Student Initial & Hiring Company Logo */}
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-xs flex-shrink-0 group-hover:scale-105 transition-transform">
+                      {alum.initial}
+                    </div>
+                    <div className="h-10 px-3 py-1 rounded-xl bg-white border border-lavender-200/90 shadow-2xs flex items-center justify-center max-w-[125px]">
+                      <img
+                        src={alum.companyLogo}
+                        alt={alum.company}
+                        className="h-7 max-w-full object-contain filter group-hover:scale-105 transition-transform"
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
-                  <div className="h-10 px-3 py-1 rounded-xl bg-white border border-lavender-200/90 shadow-2xs flex items-center justify-center max-w-[125px]">
-                    <img
-                      src={alum.companyLogo}
-                      alt={alum.company}
-                      className="h-7 max-w-full object-contain filter group-hover:scale-105 transition-transform"
-                      loading="lazy"
-                    />
+
+                  {/* Candidate Name & Rayalaseema College */}
+                  <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
+                    {alum.studentName}
+                  </h4>
+                  <p
+                    title={alum.college}
+                    className="text-[11px] text-lavender-600 mt-1 font-medium leading-snug min-h-[32px] line-clamp-2"
+                  >
+                    {alum.college}
+                  </p>
+
+                  {/* Role Offered & Company */}
+                  <div className="mt-3">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-lavender-900">
+                      <span className="text-purple-700 font-extrabold">{alum.company}</span>
+                      <span className="text-lavender-300">•</span>
+                      <span className="text-lavender-700 truncate">{alum.role}</span>
+                    </div>
+                    <span className="text-[10px] font-semibold text-purple-600 block mt-0.5">
+                      {alum.batch}
+                    </span>
                   </div>
                 </div>
 
-                {/* Candidate Name & Rayalaseema College */}
-                <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
-                  {alum.studentName}
-                </h4>
-                <p
-                  title={alum.college}
-                  className="text-[11px] text-lavender-600 mt-1 font-medium leading-snug min-h-[32px] line-clamp-2"
-                >
-                  {alum.college}
-                </p>
-
-                {/* Role Offered & Company */}
-                <div className="mt-3">
-                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-lavender-900">
-                    <span className="text-purple-700 font-extrabold">{alum.company}</span>
-                    <span className="text-lavender-300">•</span>
-                    <span className="text-lavender-700 truncate">{alum.role}</span>
-                  </div>
-                  <span className="text-[10px] font-semibold text-purple-600 block mt-0.5">
-                    {alum.batch}
+                {/* Bottom Row: CTC Package Pill & Verified Offer Badge */}
+                <div className="pt-4 mt-4 border-t border-lavender-100 flex items-center justify-between">
+                  <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 shadow-2xs">
+                    {alum.package}
+                  </span>
+                  <span className="text-[10px] font-extrabold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-200 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-purple-600" /> Placed
                   </span>
                 </div>
               </div>
-
-              {/* Bottom Row: CTC Package Pill & Verified Offer Badge */}
-              <div className="pt-4 mt-4 border-t border-lavender-100 flex items-center justify-between">
-                <span className="text-xs font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200">
-                  {alum.package}
-                </span>
-                <span className="text-[10px] font-extrabold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-lg border border-purple-200 flex items-center gap-1">
-                  <span>✓</span> Placed
-                </span>
-              </div>
-            </div>
+            </Card3D>
           ))}
         </div>
 
@@ -367,12 +373,16 @@ export default function PlacementTreeNetwork() {
               </p>
             </div>
           </div>
-          <a
-            href="#applications"
-            className="px-5 py-2.5 rounded-2xl text-xs font-extrabold text-purple-950 bg-white hover:bg-lavender-100 hover:scale-102 active:scale-95 transition-all shadow-md whitespace-nowrap"
+          <Button3D
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              window.location.hash = '#applications';
+            }}
+            icon={<ArrowRight className="w-3.5 h-3.5 text-purple-700" />}
           >
-            Apply for Corporate Cohort 2026 →
-          </a>
+            Apply for Corporate Cohort 2026
+          </Button3D>
         </div>
       </div>
     </div>
