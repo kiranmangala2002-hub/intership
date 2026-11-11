@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DomainDetailModal from './DomainDetailModal';
 import Card3D from './common3d/Card3D';
 import Button3D from './common3d/Button3D';
+import TechVisualizer3D from './TechVisualizer3D';
 import { Cpu, Globe, Server, CheckCircle2, BookOpen, ArrowRight, Activity, Zap } from 'lucide-react';
 
 export default function DomainCard({ domain, onSelectDomain }) {
@@ -76,12 +77,12 @@ export default function DomainCard({ domain, onSelectDomain }) {
               </p>
             </div>
 
-            {/* 3D Holographic Visualizer Preview Panel */}
+            {/* 3D WebGL Holographic Visualizer Preview Panel */}
             <div
               className={`p-3.5 mb-4 rounded-2xl border transition-all duration-300 relative overflow-hidden ${
                 isFullStack
-                  ? 'bg-purple-50/70 border-purple-200/80 group-hover:border-purple-300'
-                  : 'bg-teal-50/70 border-teal-200/80 group-hover:border-teal-300'
+                  ? 'bg-purple-50/70 border-purple-200/80 group-hover:border-purple-300 shadow-inner'
+                  : 'bg-teal-50/70 border-teal-200/80 group-hover:border-teal-300 shadow-inner'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
@@ -99,12 +100,17 @@ export default function DomainCard({ domain, onSelectDomain }) {
                     />
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-wider text-lavender-900">
-                    {isFullStack ? 'Live AI Cloud Architecture' : 'Live Hardware Test Bench'}
+                    {isFullStack ? 'WebGL 3D AI Architecture' : 'WebGL 3D Hardware Test Bench'}
                   </span>
                 </div>
-                <span className="text-[9px] font-bold text-lavender-500 bg-white/80 px-2 py-0.5 rounded-full border border-lavender-100">
-                  {isFullStack ? 'Latency: 12ms' : 'Clock: 168 MHz'}
+                <span className="text-[9px] font-bold text-lavender-600 bg-white/90 px-2 py-0.5 rounded-full border border-lavender-200 shadow-2xs">
+                  {isFullStack ? 'Interactive 3D Core' : 'Interactive 3D Board'}
                 </span>
+              </div>
+
+              {/* Real Three.js 3D WebGL Visualization */}
+              <div className="my-1 rounded-xl bg-slate-950/5 border border-lavender-200/50 overflow-hidden shadow-inner">
+                <TechVisualizer3D type={isFullStack ? 'fullstack' : 'embedded'} />
               </div>
 
               {/* Holographic Spec Visuals */}

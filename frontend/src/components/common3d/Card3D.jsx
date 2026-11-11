@@ -11,8 +11,8 @@ import React, { useRef, useState, useEffect } from 'react';
 export default function Card3D({
   children,
   className = '',
-  maxTilt = 12,
-  depth = 20,
+  maxTilt = 14,
+  depth = 26,
   glare = true,
   onClick,
   style = {},
@@ -45,13 +45,13 @@ export default function Card3D({
     const rotY = xPercent * maxTilt;
     const rotX = -yPercent * maxTilt;
 
-    setTransform(`perspective(1200px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(${depth}px)`);
+    setTransform(`perspective(1100px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(${depth}px)`);
 
     if (glare) {
       setGlarePos({
         x: (x / rect.width) * 100,
         y: (y / rect.height) * 100,
-        opacity: 0.35,
+        opacity: 0.55,
       });
     }
   };
@@ -98,3 +98,4 @@ export default function Card3D({
     </div>
   );
 }
+
