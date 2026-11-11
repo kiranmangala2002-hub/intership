@@ -131,7 +131,7 @@ const ALUMNI_PLACEMENTS = [
   },
 ];
 
-export default function PlacementTreeNetwork() {
+export default function PlacementTreeNetwork({ onApplyClick }) {
   const [selectedFilter, setSelectedFilter] = useState('All');
 
   const filteredAlumni = ALUMNI_PLACEMENTS.filter((item) => {
@@ -377,7 +377,11 @@ export default function PlacementTreeNetwork() {
             variant="secondary"
             size="sm"
             onClick={() => {
-              window.location.hash = '#applications';
+              if (onApplyClick) {
+                onApplyClick();
+              } else {
+                window.location.hash = '#applications';
+              }
             }}
             icon={<ArrowRight className="w-3.5 h-3.5 text-purple-700" />}
           >

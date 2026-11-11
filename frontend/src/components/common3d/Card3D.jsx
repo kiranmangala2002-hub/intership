@@ -11,15 +11,15 @@ import React, { useRef, useState, useEffect } from 'react';
 export default function Card3D({
   children,
   className = '',
-  maxTilt = 14,
-  depth = 26,
+  maxTilt = 6,
+  depth = 12,
   glare = true,
   onClick,
   style = {},
   disabled = false,
 }) {
   const cardRef = useRef(null);
-  const [transform, setTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg)');
+  const [transform, setTransform] = useState('perspective(1200px) rotateX(0deg) rotateY(0deg)');
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
@@ -45,13 +45,13 @@ export default function Card3D({
     const rotY = xPercent * maxTilt;
     const rotX = -yPercent * maxTilt;
 
-    setTransform(`perspective(1100px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(${depth}px)`);
+    setTransform(`perspective(1200px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateZ(${depth}px)`);
 
     if (glare) {
       setGlarePos({
         x: (x / rect.width) * 100,
         y: (y / rect.height) * 100,
-        opacity: 0.55,
+        opacity: 0.2,
       });
     }
   };
