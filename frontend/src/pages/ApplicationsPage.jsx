@@ -537,9 +537,12 @@ export default function ApplicationsPage({
 
                       {/* College & Details Box */}
                       <div className="space-y-1.5 bg-lavender-50/70 p-3.5 rounded-2xl border border-lavender-200/70 text-xs mb-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-lavender-500 font-semibold">College:</span>
-                          <span className="text-lavender-950 font-bold truncate max-w-[170px]">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-lavender-500 font-semibold flex-shrink-0 pt-0.5">College:</span>
+                          <span
+                            title={app.collegeName}
+                            className="text-lavender-950 font-bold text-right text-xs leading-snug line-clamp-2 max-w-[210px]"
+                          >
                             {app.collegeName}
                           </span>
                         </div>

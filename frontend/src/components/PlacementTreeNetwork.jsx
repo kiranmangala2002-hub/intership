@@ -321,7 +321,10 @@ export default function PlacementTreeNetwork() {
                 <h4 className="font-black text-lavender-950 text-base leading-tight group-hover:text-purple-700 transition-colors">
                   {alum.studentName}
                 </h4>
-                <p className="text-[11px] text-lavender-600 mt-1 font-medium leading-snug line-clamp-2">
+                <p
+                  title={alum.college}
+                  className="text-[11px] text-lavender-600 mt-1 font-medium leading-snug min-h-[32px] line-clamp-2"
+                >
                   {alum.college}
                 </p>
 

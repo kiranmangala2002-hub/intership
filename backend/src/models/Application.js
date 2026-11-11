@@ -189,6 +189,15 @@ export const ApplicationModel = {
           photoUrl: newAppRecord.photoUrl,
           status: newAppRecord.status,
         });
+        // Keep IDs in local JSON store strictly aligned with Mongo ObjectId
+        try {
+          const apps = applicationStore.read();
+          if (apps.length > 0 && apps[0].applicationId === applicationId) {
+            apps[0]._id = mongoDoc._id.toString();
+            apps[0].id = mongoDoc._id.toString();
+            applicationStore.write(apps);
+          }
+        } catch (e) {}
         return mongoDoc;
       } catch (mongoErr) {
         console.error('MongoDB insert error (safely retained in JSON store):', mongoErr.message);
@@ -200,20 +209,48 @@ export const ApplicationModel = {
 
   async deleteById(id) {
     let mongoDeleted = null;
+    let targetAppId = null;
+
     if (isMongoConnected()) {
       try {
         mongoDeleted = await MongoApplication.findByIdAndDelete(id);
       } catch (e) {
-        // Try deleting by custom applicationId
-        mongoDeleted = await MongoApplication.findOneAndDelete({ applicationId: id });
+        // ID might not be an ObjectId
+      }
+
+      if (!mongoDeleted) {
+        try {
+          mongoDeleted = await MongoApplication.findOneAndDelete({
+            $or: [{ applicationId: id }, { _id: id }],
+          });
+        } catch (e) {}
+      }
+
+      if (mongoDeleted) {
+        targetAppId = mongoDeleted.applicationId;
       }
     }
 
     const apps = applicationStore.read();
-    const index = apps.findIndex((a) => a._id === id || a.id === id || a.applicationId === id);
+    const index = apps.findIndex(
+      (a) =>
+        a._id === id ||
+        a.id === id ||
+        a.applicationId === id ||
+        (targetAppId && a.applicationId === targetAppId)
+    );
+
     if (index !== -1) {
       const [deleted] = apps.splice(index, 1);
       applicationStore.write(apps);
+
+      // If mongo was connected but mongoDeleted wasn't found by id, delete by applicationId
+      if (isMongoConnected() && !mongoDeleted && deleted.applicationId) {
+        try {
+          await MongoApplication.deleteMany({ applicationId: deleted.applicationId });
+        } catch (e) {}
+      }
+
       return mongoDeleted || deleted;
     }
 
@@ -222,6 +259,8 @@ export const ApplicationModel = {
 
   async updateStatus(id, newStatus) {
     let mongoUpdated = null;
+    let targetAppId = null;
+
     if (isMongoConnected()) {
       try {
         mongoUpdated = await MongoApplication.findByIdAndUpdate(
@@ -229,17 +268,32 @@ export const ApplicationModel = {
           { status: newStatus },
           { new: true }
         );
-      } catch (e) {
-        mongoUpdated = await MongoApplication.findOneAndUpdate(
-          { applicationId: id },
-          { status: newStatus },
-          { new: true }
-        );
+      } catch (e) {}
+
+      if (!mongoUpdated) {
+        try {
+          mongoUpdated = await MongoApplication.findOneAndUpdate(
+            { $or: [{ applicationId: id }, { _id: id }] },
+            { status: newStatus },
+            { new: true }
+          );
+        } catch (e) {}
+      }
+
+      if (mongoUpdated) {
+        targetAppId = mongoUpdated.applicationId;
       }
     }
 
     const apps = applicationStore.read();
-    const app = apps.find((a) => a._id === id || a.id === id || a.applicationId === id);
+    const app = apps.find(
+      (a) =>
+        a._id === id ||
+        a.id === id ||
+        a.applicationId === id ||
+        (targetAppId && a.applicationId === targetAppId)
+    );
+
     if (app) {
       app.status = newStatus;
       app.updatedAt = new Date().toISOString();
