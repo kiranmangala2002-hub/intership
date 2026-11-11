@@ -60,18 +60,19 @@ export const getApplicationById = async (req, res, next) => {
 };
 
 // @desc    Lookup application status by Application ID or Student Email
-// @route   GET /api/applications/lookup/:identifier
+// @route   GET /api/applications/lookup/:identifier or GET /api/applications/lookup?query=...
 export const lookupApplication = async (req, res, next) => {
   try {
-    const { identifier } = req.params;
-    if (!identifier || !identifier.trim()) {
+    const rawIdentifier = req.params.identifier || req.query.query || req.query.identifier;
+    if (!rawIdentifier || !String(rawIdentifier).trim()) {
       return res.status(400).json({
         success: false,
         message: 'Please provide an Application ID or registered email address.',
       });
     }
 
-    const cleanQuery = identifier.trim().toLowerCase();
+    const identifier = String(rawIdentifier).trim();
+    const cleanQuery = identifier.toLowerCase();
     const allApps = await ApplicationModel.find();
     const match = allApps.find(
       (a) =>

@@ -61,6 +61,7 @@ router.get('/auth/me', authenticateToken, getMe);
 
 // Student Internship Applications CRUD & Live Metrics
 router.get('/applications/stats', getApplicationStats);
+router.get('/applications/lookup', lookupApplication);
 router.get('/applications/lookup/:identifier', lookupApplication);
 router.route('/applications')
   .get(getApplications)

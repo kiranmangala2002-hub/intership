@@ -221,7 +221,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-lavender-50 via-lavender-100/60 to-lavender-200/50 text-lavender-950 overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col justify-between bg-gradient-to-br from-lavender-50 via-lavender-100/60 to-lavender-200/50 text-lavender-950 overflow-x-hidden">
       {/* Futuristic Laser Route Transition Beam on Page Change */}
       <div className="fixed top-0 left-0 right-0 h-[3px] z-[100] pointer-events-none overflow-hidden">
         <div
@@ -246,7 +246,7 @@ export default function App() {
       />
 
       {/* Main Page Content with Cool Kinetic Holographic Transition */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex-1 w-full">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 sm:pb-3 flex-1 w-full">
         <div key={activePage} className="animate-cool-page relative">
           {/* Ambient Hologram Light Sweep Wave */}
           <div

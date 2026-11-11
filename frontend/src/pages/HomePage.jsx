@@ -4,7 +4,7 @@ import PlacementTreeNetwork from '../components/PlacementTreeNetwork';
 
 export default function HomePage({ onOpenRegister, onNavigate }) {
   return (
-    <div className="space-y-16 sm:space-y-24">
+    <div className="space-y-10 sm:space-y-14">
       {/* HERO SECTION - CINEMATIC 2-COLUMN LAYOUT WITH 3D ROBOT ON LEFT */}
       <section className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center pt-2 sm:pt-6 pb-4">
         {/* Ambient Hero Spotlight Glow */}

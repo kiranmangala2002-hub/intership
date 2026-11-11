@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className="mt-20 border-t border-lavender-200/90 bg-white/80 backdrop-blur-xl py-8 sm:py-10 text-xs font-medium text-lavender-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <footer className="mt-6 sm:mt-8 border-t border-lavender-200/90 bg-white/90 backdrop-blur-xl pt-5 sm:pt-6 pb-3 sm:pb-4 mb-0 text-xs font-medium text-lavender-700 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5">
         {/* Top Row: Brand & Social Channels */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Brand Column */}

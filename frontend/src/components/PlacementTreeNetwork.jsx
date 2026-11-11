@@ -138,7 +138,7 @@ export default function PlacementTreeNetwork() {
   });
 
   return (
-    <div className="relative w-full py-12 sm:py-20 overflow-hidden">
+    <div className="relative w-full pt-6 sm:pt-10 pb-2 sm:pb-3 overflow-hidden">
       {/* Background Soft Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-purple-200/40 via-lavender-200/30 to-indigo-100/30 rounded-full blur-3xl pointer-events-none -z-10" />
 
@@ -355,7 +355,7 @@ export default function PlacementTreeNetwork() {
         </div>
 
         {/* Corporate Placement Support Footer Pill */}
-        <div className="mt-10 p-5 rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-950 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div className="mt-6 sm:mt-8 p-5 rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-950 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="flex items-center gap-3">
             <span className="text-2xl flex-shrink-0">🚀</span>
             <div>
